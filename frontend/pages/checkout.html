@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout - CodeAlpha Store</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      .checkout-container {
+        padding: 3rem 0;
+        min-height: 70vh;
+      }
+
+      .checkout-header {
+        margin-bottom: 2rem;
+      }
+
+      .checkout-header h1 {
+        color: #2c3e50;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .checkout-steps {
+        display: flex;
+        justify-content: center;
+        margin: 2rem 0 3rem;
+        position: relative;
+      }
+
+      .checkout-steps::before {
+        content: "";
+        position: absolute;
+        top: 20px;
+        left: 50px;
+        right: 50px;
+        height: 2px;
+        background: #ddd;
+        z-index: 1;
+      }
+
+      .step {
+        text-align: center;
+        position: relative;
+        z-index: 2;
+        flex: 1;
+        max-width: 200px;
+      }
+
+      .step-number {
+        width: 40px;
+        height: 40px;
+        background: white;
+        border: 2px solid #ddd;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 0.5rem;
+        font-weight: 600;
+        color: #7f8c8d;
+      }
+
+      .step.active .step-number {
+        background: #3498db;
+        border-color: #3498db;
+        color: white;
+      }
+
+      .step.completed .step-number {
+        background: #2ecc71;
+        border-color: #2ecc71;
+        color: white;
+      }
+
+      .step-label {
+        font-size: 0.9rem;
+        color: #7f8c8d;
+      }
+
+      .step.active .step-label {
+        color: #3498db;
+        font-weight: 500;
+      }
+
+      .checkout-content {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+      }
+
+      .checkout-form {
+        background: white;
+        border-radius: 10px;
+        padding: 2rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .section-title {
+        font-size: 1.3rem;
+        color: #2c3e50;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #3498db;
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #2c3e50;
+        font-weight: 500;
+      }
+
+      .form-group.required label::after {
+        content: " *";
+        color: #e74c3c;
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s;
+      }
+
+      .form-group input:focus,
+      .form-group select:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+      }
+
+      .payment-methods {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        margin: 1.5rem 0;
+      }
+
+      .payment-method {
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        padding: 1rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .payment-method:hover {
+        border-color: #3498db;
+      }
+
+      .payment-method.selected {
+        border-color: #3498db;
+        background: rgba(52, 152, 219, 0.1);
+      }
+
+      .payment-method i {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        display: block;
+      }
+
+      .checkout-summary {
+        background: white;
+        border-radius: 10px;
+        padding: 2rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        height: fit-content;
+        position: sticky;
+        top: 100px;
+      }
+
+      .order-items {
+        max-height: 300px;
+        overflow-y: auto;
+        margin-bottom: 1.5rem;
+      }
+
+      .order-item {
+        display: flex;
+        align-items: center;
+        padding: 1rem 0;
+        border-bottom: 1px solid #eee;
+      }
+
+      .order-item:last-child {
+        border-bottom: none;
+      }
+
+      .order-item-image {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-right: 1rem;
+      }
+
+      .order-item-details {
+        flex: 1;
+      }
+
+      .order-item-name {
+        font-weight: 500;
+        margin-bottom: 0.2rem;
+      }
+
+      .order-item-price {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+      }
+
+      .order-item-quantity {
+        font-weight: 600;
+        color: #2c3e50;
+      }
+
+      .summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin: 0.8rem 0;
+        padding: 0.5rem 0;
+      }
+
+      .summary-row.total {
+        border-top: 2px solid #eee;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #2c3e50;
+      }
+
+      .btn-place-order {
+        width: 100%;
+        padding: 1rem;
+        background: #2ecc71;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s;
+        margin-top: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+
+      .btn-place-order:hover {
+        background: #27ae60;
+      }
+
+      .btn-place-order:disabled {
+        background: #95a5a6;
+        cursor: not-allowed;
+      }
+
+      .security-notice {
+        background: #f8f9fa;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-top: 1.5rem;
+        text-align: center;
+        color: #7f8c8d;
+        font-size: 0.9rem;
+      }
+
+      .security-notice i {
+        color: #2ecc71;
+        margin-right: 0.5rem;
+      }
+
+      .checkout-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid #eee;
+      }
+
+      @media (max-width: 992px) {
+        .checkout-content {
+          grid-template-columns: 1fr;
+        }
+
+        .checkout-summary {
+          position: static;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+
+        .checkout-steps::before {
+          display: none;
+        }
+
+        .checkout-steps {
+          flex-direction: column;
+          gap: 1.5rem;
+        }
+
+        .step {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          max-width: 100%;
+        }
+
+        .step-number {
+          margin: 0;
+        }
+      }
+
+      .error-message {
+        color: #e74c3c;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+        display: none;
+      }
+
+      .error-message.show {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="container">
+        <div class="nav-brand">
+          <a href="../index.html">🛒 CodeAlpha Store</a>
+        </div>
+
+        <div class="nav-links">
+          <a href="../index.html"><i class="fas fa-home"></i> Home</a>
+          <a href="cart.html" id="cartLink">
+            <i class="fas fa-shopping-cart"></i> Cart
+            <span class="cart-count">0</span>
+          </a>
+          <div class="auth-buttons">
+            <!-- Will be populated by JavaScript -->
+            <a href="login.html" class="btn-login">Login</a>
+            <a href="register.html" class="btn-register">Register</a>
+          </div>
+        </div>
+
+        <div class="mobile-menu-btn">
+          <i class="fas fa-bars"></i>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Checkout Content -->
+    <main class="container checkout-container">
+      <div class="checkout-header">
+        <h1><i class="fas fa-shopping-bag"></i> Checkout</h1>
+        <p>Complete your purchase in 3 simple steps</p>
+      </div>
+
+      <!-- Checkout Steps -->
+      <div class="checkout-steps">
+        <div class="step completed" id="step1">
+          <div class="step-number">1</div>
+          <div class="step-label">Cart</div>
+        </div>
+        <div class="step active" id="step2">
+          <div class="step-number">2</div>
+          <div class="step-label">Shipping & Payment</div>
+        </div>
+        <div class="step" id="step3">
+          <div class="step-number">3</div>
+          <div class="step-label">Confirmation</div>
+        </div>
+      </div>
+
+      <div class="checkout-content">
+        <!-- Checkout Form -->
+        <div class="checkout-form">
+          <h2 class="section-title">Shipping Information</h2>
+
+          <form id="checkoutForm">
+            <div class="form-row">
+              <div class="form-group required">
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" name="firstName" required />
+                <div class="error-message" id="firstNameError"></div>
+              </div>
+              <div class="form-group required">
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" name="lastName" required />
+                <div class="error-message" id="lastNameError"></div>
+              </div>
+            </div>
+
+            <div class="form-group required">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" required />
+              <div class="error-message" id="emailError"></div>
+            </div>
+
+            <div class="form-group required">
+              <label for="phone">Phone Number</label>
+              <div style="display: flex; gap: 10px">
+                <select
+                  id="countryCode"
+                  style="
+                    flex: 0 0 100px;
+                    padding: 0.8rem 0.5rem;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                  "
+                >
+                  <option value="+1">🇺🇸 +1</option>
+                  <option value="+44">🇬🇧 +44</option>
+                  <option value="+92" selected>🇵🇰 +92</option>
+                  <option value="+91">🇮🇳 +91</option>
+                  <option value="+971">🇦🇪 +971</option>
+                  <option value="+966">🇸🇦 +966</option>
+                  <option value="+86">🇨🇳 +86</option>
+                  <option value="+81">🇯🇵 +81</option>
+                  <option value="+82">🇰🇷 +82</option>
+                  <option value="+65">🇸🇬 +65</option>
+                  <option value="+60">🇲🇾 +60</option>
+                  <option value="+880">🇧🇩 +880</option>
+                  <option value="+94">🇱🇰 +94</option>
+                  <option value="+977">🇳🇵 +977</option>
+                </select>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  required
+                  style="flex: 1"
+                  placeholder="300 1234567"
+                />
+              </div>
+              <div class="error-message" id="phoneError"></div>
+            </div>
+
+            <div class="form-group required">
+              <label for="address">Street Address</label>
+              <input type="text" id="address" name="address" required />
+              <div class="error-message" id="addressError"></div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group required">
+                <label for="city">City</label>
+                <input type="text" id="city" name="city" required />
+                <div class="error-message" id="cityError"></div>
+              </div>
+              <div class="form-group required">
+                <label for="zipCode">ZIP Code</label>
+                <input type="text" id="zipCode" name="zipCode" required />
+                <div class="error-message" id="zipCodeError"></div>
+              </div>
+            </div>
+
+            <div class="form-group required">
+              <label for="country">Country</label>
+              <select id="country" name="country" required>
+                <option value="">Select Country</option>
+                <option value="US">United States</option>
+                <option value="IN">India</option>
+                <option value="PK">Pakistan</option>
+                <option value="UK">United Kingdom</option>
+                <option value="CA">Canada</option>
+                <option value="AU">Australia</option>
+                <option value="AE">United Arab Emirates</option>
+                <option value="SA">Saudi Arabia</option>
+                <option value="CN">China</option>
+                <option value="JP">Japan</option>
+                <option value="KR">South Korea</option>
+                <option value="SG">Singapore</option>
+                <option value="MY">Malaysia</option>
+                <option value="BD">Bangladesh</option>
+                <option value="LK">Sri Lanka</option>
+                <option value="NP">Nepal</option>
+              </select>
+              <div class="error-message" id="countryError"></div>
+            </div>
+
+            <h2 class="section-title" style="margin-top: 2.5rem">
+              Payment Method
+            </h2>
+
+            <div class="payment-methods">
+              <div
+                class="payment-method selected"
+                data-method="credit-card"
+                onclick="selectPaymentMethod('credit-card')"
+              >
+                <i class="fas fa-credit-card"></i>
+                <div>Credit/Debit Card</div>
+              </div>
+              <div
+                class="payment-method"
+                data-method="cod"
+                onclick="selectPaymentMethod('cod')"
+              >
+                <i class="fas fa-money-bill-wave"></i>
+                <div>Cash on Delivery</div>
+              </div>
+              <div
+                class="payment-method"
+                data-method="bank-transfer"
+                onclick="selectPaymentMethod('bank-transfer')"
+              >
+                <i class="fas fa-university"></i>
+                <div>Bank Transfer</div>
+              </div>
+            </div>
+
+            <div id="creditCardDetails" style="margin-top: 1.5rem">
+              <div class="form-group required">
+                <label for="cardNumber">Card Number</label>
+                <input
+                  type="text"
+                  id="cardNumber"
+                  name="cardNumber"
+                  placeholder="1234 5678 9012 3456"
+                />
+                <div class="error-message" id="cardNumberError"></div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group required">
+                  <label for="expiryDate">Expiry Date</label>
+                  <input
+                    type="text"
+                    id="expiryDate"
+                    name="expiryDate"
+                    placeholder="MM/YY"
+                  />
+                  <div class="error-message" id="expiryDateError"></div>
+                </div>
+                <div class="form-group required">
+                  <label for="cvv">CVV</label>
+                  <input type="text" id="cvv" name="cvv" placeholder="123" />
+                  <div class="error-message" id="cvvError"></div>
+                </div>
+              </div>
+
+              <div class="form-group required">
+                <label for="cardName">Name on Card</label>
+                <input type="text" id="cardName" name="cardName" />
+                <div class="error-message" id="cardNameError"></div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="notes">Order Notes (Optional)</label>
+              <textarea
+                id="notes"
+                name="notes"
+                rows="3"
+                placeholder="Special instructions for delivery"
+              ></textarea>
+            </div>
+          </form>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="checkout-summary">
+          <h2 class="section-title">Order Summary</h2>
+
+          <div class="order-items" id="orderItems">
+            <!-- Order items will be loaded here -->
+          </div>
+
+          <div id="orderSummary">
+            <!-- Summary will be loaded here -->
+          </div>
+
+          <button class="btn-place-order" onclick="placeOrder()">
+            <i class="fas fa-lock"></i> Place Order
+          </button>
+
+          <div class="security-notice">
+            <i class="fas fa-shield-alt"></i>
+            Your payment is secure and encrypted
+          </div>
+        </div>
+      </div>
+
+      <div class="checkout-actions">
+        <a href="cart.html" class="btn-view">
+          <i class="fas fa-arrow-left"></i> Back to Cart
+        </a>
+        <button class="btn-add-cart" onclick="validateAndPlaceOrder()">
+          Place Order <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-section">
+          <h3>CodeAlpha Store</h3>
+          <p>Your one-stop shop for all needs</p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <a href="../index.html">Home</a>
+          <a href="../index.html#products">Products</a>
+          <a href="cart.html">Cart</a>
+        </div>
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <p>Email: support@codealpha.com</p>
+          <p>Phone: +1 234 567 890</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 CodeAlpha E-Commerce Store. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+      let currentPaymentMethod = "credit-card";
+      let cartItems = [];
+      let orderTotal = 0;
+
+      document.addEventListener("DOMContentLoaded", function () {
+        updateCartCount();
+        checkAuthStatus();
+        loadCartForCheckout();
+        setupFormValidation();
+
+        // Set default payment method
+        selectPaymentMethod("credit-card");
+      });
+
+      function loadCartForCheckout() {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        if (cart.length === 0) {
+          window.location.href = "cart.html";
+          return;
+        }
+
+        cartItems = cart;
+        displayOrderItems();
+        calculateOrderSummary();
+      }
+
+      function displayOrderItems() {
+        const orderItemsDiv = document.getElementById("orderItems");
+
+        orderItemsDiv.innerHTML = cartItems
+          .map(
+            (item) => `
+                <div class="order-item">
+                    <img src="${
+                      item.image ||
+                      "https://via.placeholder.com/60x60?text=Product"
+                    }" 
+                         alt="${item.name}" 
+                         class="order-item-image"
+                         onerror="this.src='https://via.placeholder.com/60x60?text=Product'">
+                    <div class="order-item-details">
+                        <div class="order-item-name">${item.name}</div>
+                        <div class="order-item-price">$${item.price.toFixed(
+                          2
+                        )} each</div>
+                    </div>
+                    <div class="order-item-quantity">×${item.quantity}</div>
+                </div>
+            `
+          )
+          .join("");
+      }
+
+      function calculateOrderSummary() {
+        const subtotal = cartItems.reduce(
+          (sum, item) => sum + item.price * item.quantity,
+          0
+        );
+        const shipping = subtotal > 50 ? 0 : 5.99;
+        const tax = subtotal * 0.1; // 10% tax
+        const total = subtotal + shipping + tax;
+        orderTotal = total;
+
+        const orderSummaryDiv = document.getElementById("orderSummary");
+
+        orderSummaryDiv.innerHTML = `
+                <div class="summary-row">
+                    <span>Subtotal (${cartItems.reduce(
+                      (sum, item) => sum + item.quantity,
+                      0
+                    )} items)</span>
+                    <span>$${subtotal.toFixed(2)}</span>
+                </div>
+                <div class="summary-row">
+                    <span>Shipping</span>
+                    <span>${
+                      shipping === 0 ? "FREE" : `$${shipping.toFixed(2)}`
+                    }</span>
+                </div>
+                <div class="summary-row">
+                    <span>Tax (10%)</span>
+                    <span>$${tax.toFixed(2)}</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total</span>
+                    <span>$${total.toFixed(2)}</span>
+                </div>
+            `;
+      }
+
+      function selectPaymentMethod(method) {
+        currentPaymentMethod = method;
+
+        // Update UI
+        document.querySelectorAll(".payment-method").forEach((el) => {
+          el.classList.remove("selected");
+        });
+        document
+          .querySelector(`.payment-method[data-method="${method}"]`)
+          .classList.add("selected");
+
+        // Show/hide credit card details
+        const creditCardDetails = document.getElementById("creditCardDetails");
+        if (method === "credit-card") {
+          creditCardDetails.style.display = "block";
+        } else {
+          creditCardDetails.style.display = "none";
+        }
+      }
+
+      function setupFormValidation() {
+        const form = document.getElementById("checkoutForm");
+        const inputs = form.querySelectorAll(
+          "input[required], select[required]"
+        );
+
+        inputs.forEach((input) => {
+          input.addEventListener("blur", function () {
+            validateField(this);
+          });
+
+          input.addEventListener("input", function () {
+            clearError(this);
+          });
+        });
+      }
+
+      function validateField(field) {
+        const errorId = field.id + "Error";
+        const errorDiv = document.getElementById(errorId);
+
+        if (!field.value.trim()) {
+          showError(field, errorDiv, "This field is required");
+          return false;
+        }
+
+        // Email validation
+        if (field.type === "email") {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(field.value)) {
+            showError(field, errorDiv, "Please enter a valid email address");
+            return false;
+          }
+        }
+
+        // Phone validation
+        if (field.id === "phone") {
+          const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+          if (!phoneRegex.test(field.value.replace(/[\s\-\(\)]/g, ""))) {
+            showError(field, errorDiv, "Please enter a valid phone number");
+            return false;
+          }
+        }
+
+        // Credit card validation (if visible)
+        if (
+          field.id === "cardNumber" &&
+          currentPaymentMethod === "credit-card"
+        ) {
+          const cardRegex = /^\d{16}$/;
+          const cleaned = field.value.replace(/\s/g, "");
+          if (!cardRegex.test(cleaned)) {
+            showError(
+              field,
+              errorDiv,
+              "Please enter a valid 16-digit card number"
+            );
+            return false;
+          }
+        }
+
+        clearError(field);
+        return true;
+      }
+
+      function showError(field, errorDiv, message) {
+        field.style.borderColor = "#e74c3c";
+        errorDiv.textContent = message;
+        errorDiv.classList.add("show");
+      }
+
+      function clearError(field) {
+        field.style.borderColor = "";
+        const errorId = field.id + "Error";
+        const errorDiv = document.getElementById(errorId);
+        if (errorDiv) {
+          errorDiv.textContent = "";
+          errorDiv.classList.remove("show");
+        }
+      }
+
+      function validateAndPlaceOrder() {
+        const form = document.getElementById("checkoutForm");
+        const requiredFields = form.querySelectorAll(
+          "input[required], select[required]"
+        );
+        let isValid = true;
+
+        // Validate all required fields
+        requiredFields.forEach((field) => {
+          if (!validateField(field)) {
+            isValid = false;
+          }
+        });
+
+        // Validate credit card fields if payment method is credit card
+        if (currentPaymentMethod === "credit-card") {
+          const cardFields = ["cardNumber", "expiryDate", "cvv", "cardName"];
+          cardFields.forEach((fieldId) => {
+            const field = document.getElementById(fieldId);
+            if (!validateField(field)) {
+              isValid = false;
+            }
+          });
+        }
+
+        if (isValid) {
+          placeOrder();
+        } else {
+          showToast("Please fill all required fields correctly", "error");
+        }
+      }
+
+      async function placeOrder() {
+        const form = document.getElementById("checkoutForm");
+        const submitBtn = document.querySelector(".btn-place-order");
+        const originalText = submitBtn.innerHTML;
+
+        // Show loading state
+        submitBtn.innerHTML =
+          '<i class="fas fa-spinner fa-spin"></i> Processing...';
+        submitBtn.disabled = true;
+
+        try {
+          // Collect form data
+          const countryCode = document.getElementById("countryCode").value;
+          const phoneNumber = document.getElementById("phone").value;
+
+          const formData = {
+            shippingAddress: {
+              firstName: document.getElementById("firstName").value,
+              lastName: document.getElementById("lastName").value,
+              email: document.getElementById("email").value,
+              phone: countryCode + " " + phoneNumber,
+              address: document.getElementById("address").value,
+              city: document.getElementById("city").value,
+              zipCode: document.getElementById("zipCode").value,
+              country: document.getElementById("country").value,
+            },
+            paymentMethod: currentPaymentMethod, // This should be 'cod', 'credit-card', etc.
+            notes: document.getElementById("notes").value || "",
+          };
+
+          // Get cart items
+          const cart = JSON.parse(localStorage.getItem("cart")) || [];
+          const products = cart.map((item) => ({
+            productId: item.productId,
+            quantity: item.quantity,
+          }));
+
+          // Get user token
+          const token = localStorage.getItem("token");
+
+          if (!token) {
+            throw new Error("Please login to place an order");
+          }
+
+          if (cart.length === 0) {
+            throw new Error("Your cart is empty");
+          }
+
+          // Send order to backend
+          const response = await fetch("http://localhost:5000/api/orders", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              products: products,
+              shippingAddress: formData.shippingAddress,
+              paymentMethod: currentPaymentMethod, // Send the mapped value
+            }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            // Order successful
+            showToast("Order placed successfully!", "success");
+
+            // Save order total for confirmation page
+            localStorage.setItem("lastOrderTotal", data.order.totalAmount);
+            localStorage.setItem("lastPaymentMethod", data.order.paymentMethod);
+
+            // Clear cart
+            localStorage.removeItem("cart");
+            updateCartCount();
+
+            // Update checkout steps
+            document.getElementById("step2").classList.remove("active");
+            document.getElementById("step2").classList.add("completed");
+            document.getElementById("step3").classList.add("active");
+
+            // Show order confirmation
+            setTimeout(() => {
+              window.location.href = `order-confirmation.html?orderId=${data.order._id}`;
+            }, 1500);
+          } else {
+            throw new Error(
+              data.error || data.details?.[0] || "Failed to place order"
+            );
+          }
+        } catch (error) {
+          console.error("Order error:", error);
+          showToast(error.message, "error");
+          submitBtn.innerHTML = originalText;
+          submitBtn.disabled = false;
+        }
+      }
+
+      function updateCartCount() {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        const cartCount = document.querySelector(".cart-count");
+        if (cartCount) {
+          cartCount.textContent = totalItems;
+        }
+      }
+
+      function showToast(message, type = "success") {
+        const existingToast = document.querySelector(".toast");
+        if (existingToast) {
+          existingToast.remove();
+        }
+
+        const toast = document.createElement("div");
+        toast.className = `toast ${type}`;
+        toast.textContent = message;
+
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+          toast.remove();
+        }, 3000);
+      }
+
+      async function checkAuthStatus() {
+        const token = localStorage.getItem("token");
+        const authButtons = document.querySelector(".auth-buttons");
+
+        if (!authButtons) return;
+
+        if (token) {
+          try {
+            const response = await fetch("http://localhost:5000/api/auth/me", {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+
+            if (response.ok) {
+              const user = await response.json();
+              authButtons.innerHTML = `
+                            <span class="welcome">Welcome, ${user.username}</span>
+                            <a href="#" onclick="logout()" class="btn-login">Logout</a>
+                        `;
+            } else {
+              localStorage.removeItem("token");
+            }
+          } catch (error) {
+            console.error("Error checking auth status:", error);
+            localStorage.removeItem("token");
+          }
+        }
+      }
+
+      function logout() {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        showToast("Logged out successfully");
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
+      }
+
+      window.logout = logout;
+    </script>
+  </body>
+</html>

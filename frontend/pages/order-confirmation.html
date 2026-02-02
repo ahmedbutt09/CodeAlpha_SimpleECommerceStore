@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Confirmation - CodeAlpha Store</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      .confirmation-container {
+        min-height: 70vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem 1rem;
+      }
+
+      .confirmation-card {
+        background: white;
+        border-radius: 15px;
+        padding: 3rem;
+        width: 100%;
+        max-width: 600px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      .success-icon {
+        font-size: 4rem;
+        color: #2ecc71;
+        margin-bottom: 1.5rem;
+      }
+
+      .confirmation-card h1 {
+        color: #2c3e50;
+        margin-bottom: 1rem;
+      }
+
+      .confirmation-card p {
+        color: #7f8c8d;
+        margin-bottom: 2rem;
+        line-height: 1.6;
+      }
+
+      .order-details {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 2rem;
+        margin: 2rem 0;
+        text-align: left;
+      }
+
+      .order-detail-row {
+        display: flex;
+        justify-content: space-between;
+        margin: 0.8rem 0;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #eee;
+      }
+
+      .order-detail-row:last-child {
+        border-bottom: none;
+      }
+
+      .order-detail-label {
+        color: #7f8c8d;
+      }
+
+      .order-detail-value {
+        font-weight: 500;
+        color: #2c3e50;
+      }
+
+      .order-detail-value.order-id {
+        font-family: monospace;
+        background: #2c3e50;
+        color: white;
+        padding: 0.3rem 0.8rem;
+        border-radius: 4px;
+        font-size: 0.9rem;
+      }
+
+      .btn-group {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .btn-primary,
+      .btn-secondary {
+        padding: 1rem 2rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .btn-primary {
+        background: #3498db;
+        color: white;
+        border: 2px solid #3498db;
+      }
+
+      .btn-primary:hover {
+        background: #2980b9;
+        border-color: #2980b9;
+      }
+
+      .btn-secondary {
+        background: white;
+        color: #3498db;
+        border: 2px solid #3498db;
+      }
+
+      .btn-secondary:hover {
+        background: #f8f9fa;
+      }
+
+      .email-note {
+        background: #e8f4fc;
+        border-left: 4px solid #3498db;
+        padding: 1rem;
+        margin-top: 2rem;
+        text-align: left;
+        border-radius: 4px;
+      }
+
+      .email-note i {
+        color: #3498db;
+        margin-right: 0.5rem;
+      }
+
+      @media (max-width: 480px) {
+        .confirmation-card {
+          padding: 2rem;
+        }
+
+        .btn-group {
+          flex-direction: column;
+        }
+
+        .btn-primary,
+        .btn-secondary {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Simple Navigation -->
+    <nav style="background: #2c3e50; padding: 1rem">
+      <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px">
+        <a
+          href="../index.html"
+          style="
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 600;
+          "
+        >
+          🛒 CodeAlpha Store
+        </a>
+      </div>
+    </nav>
+
+    <!-- Order Confirmation -->
+    <div class="confirmation-container">
+      <div class="confirmation-card">
+        <div class="success-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+
+        <h1>Order Confirmed!</h1>
+        <p>
+          Thank you for your purchase. Your order has been successfully placed
+          and is being processed.
+        </p>
+
+        <div class="order-details">
+          <div class="order-detail-row">
+            <span class="order-detail-label">Order ID:</span>
+            <span class="order-detail-value order-id" id="orderId"
+              >#ORD-123456</span
+            >
+          </div>
+          <div class="order-detail-row">
+            <span class="order-detail-label">Date:</span>
+            <span class="order-detail-value" id="orderDate">Loading...</span>
+          </div>
+          <div class="order-detail-row">
+            <span class="order-detail-label">Total Amount:</span>
+            <span class="order-detail-value" id="orderTotal">Loading...</span>
+          </div>
+          <div class="order-detail-row">
+            <span class="order-detail-label">Payment Method:</span>
+            <span class="order-detail-value" id="paymentMethod"
+              >Loading...</span
+            >
+          </div>
+          <div class="order-detail-row">
+            <span class="order-detail-label">Status:</span>
+            <span class="order-detail-value" style="color: #2ecc71"
+              >Confirmed</span
+            >
+          </div>
+        </div>
+
+        <div class="email-note">
+          <p>
+            <i class="fas fa-envelope"></i> A confirmation email has been sent
+            to your registered email address with all order details.
+          </p>
+        </div>
+
+        <div class="btn-group">
+          <a href="../index.html" class="btn-primary">
+            <i class="fas fa-shopping-bag"></i> Continue Shopping
+          </a>
+          <a href="orders.html" class="btn-secondary">
+            <i class="fas fa-clipboard-list"></i> View Orders
+          </a>
+        </div>
+
+        <p style="margin-top: 2rem; font-size: 0.9rem; color: #95a5a6">
+          Need help?
+          <a href="contact.html" style="color: #3498db">Contact Support</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Get order details from URL or localStorage
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderId =
+          urlParams.get("orderId") ||
+          "ORD-" + Math.floor(Math.random() * 1000000);
+
+        // Set order details
+        document.getElementById("orderId").textContent = `#${orderId}`;
+        document.getElementById("orderDate").textContent =
+          new Date().toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          });
+
+        // Get order total from localStorage or use default
+        const orderTotal = localStorage.getItem("lastOrderTotal") || "99.99";
+        document.getElementById("orderTotal").textContent = `$${parseFloat(
+          orderTotal
+        ).toFixed(2)}`;
+
+        // Get payment method from localStorage or use default
+        const paymentMethod =
+          localStorage.getItem("lastPaymentMethod") || "Credit Card";
+        document.getElementById("paymentMethod").textContent = paymentMethod;
+
+        // Clear order data from localStorage
+        localStorage.removeItem("lastOrderTotal");
+        localStorage.removeItem("lastPaymentMethod");
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1936 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Orders - CodeAlpha Store</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      .orders-container {
+        padding: 3rem 0;
+        min-height: 70vh;
+      }
+
+      .orders-header {
+        margin-bottom: 2rem;
+      }
+
+      .orders-header h1 {
+        color: #2c3e50;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .orders-tabs {
+        display: flex;
+        border-bottom: 2px solid #eee;
+        margin-bottom: 2rem;
+        overflow-x: auto;
+        background: #f8f9fa;
+        padding: 0.5rem;
+        border-radius: 8px;
+      }
+
+      .orders-tab {
+        padding: 0.8rem 1.5rem;
+        background: white;
+        border: 1px solid #ddd;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #7f8c8d;
+        cursor: pointer;
+        position: relative;
+        white-space: nowrap;
+        border-radius: 6px;
+        margin-right: 0.5rem;
+        transition: all 0.3s;
+      }
+
+      .orders-tab:hover {
+        color: #3498db;
+        border-color: #3498db;
+      }
+
+      .orders-tab.active {
+        background: #3498db;
+        color: white;
+        border-color: #3498db;
+      }
+
+      .orders-list {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      .order-card {
+        background: white;
+        border-radius: 10px;
+        padding: 1.5rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+        border-left: 4px solid #3498db;
+      }
+
+      .order-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      }
+
+      .order-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #eee;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .order-info h3 {
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+      }
+
+      .order-id {
+        font-family: "Courier New", monospace;
+        background: #2c3e50;
+        color: white;
+        padding: 0.2rem 0.8rem;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+      }
+
+      .order-date {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .order-status {
+        padding: 0.3rem 1rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+      }
+
+      .status-pending {
+        background: #fef9e7;
+        color: #f39c12;
+        border: 1px solid #f39c12;
+      }
+      .status-processing {
+        background: #e8f6f3;
+        color: #1abc9c;
+        border: 1px solid #1abc9c;
+      }
+      .status-shipped {
+        background: #eaf2f8;
+        color: #3498db;
+        border: 1px solid #3498db;
+      }
+      .status-delivered {
+        background: #eafaf1;
+        color: #2ecc71;
+        border: 1px solid #2ecc71;
+      }
+      .status-cancelled {
+        background: #fdedec;
+        color: #e74c3c;
+        border: 1px solid #e74c3c;
+      }
+
+      .order-items {
+        margin: 1rem 0;
+      }
+
+      .order-item {
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
+        background: #f8f9fa;
+        transition: background 0.3s;
+      }
+
+      .order-item:hover {
+        background: #e9ecef;
+      }
+
+      .order-item-image {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-right: 1rem;
+        border: 1px solid #ddd;
+      }
+
+      .order-item-details {
+        flex: 1;
+      }
+
+      .order-item-name {
+        font-weight: 500;
+        margin-bottom: 0.2rem;
+        color: #2c3e50;
+      }
+
+      .order-item-price {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+      }
+
+      .order-item-quantity {
+        color: #2c3e50;
+        background: white;
+        padding: 0.2rem 0.8rem;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        font-weight: 600;
+      }
+
+      .order-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #eee;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .order-total {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #2c3e50;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .order-actions {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .btn-view-order,
+      .btn-reorder {
+        padding: 0.6rem 1.2rem;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        border: none;
+        font-family: "Poppins", sans-serif;
+      }
+
+      .btn-view-order {
+        background: #3498db;
+        color: white;
+        border: 1px solid #3498db;
+      }
+
+      .btn-view-order:hover {
+        background: #2980b9;
+        transform: translateY(-2px);
+      }
+
+      .btn-reorder {
+        background: white;
+        color: #3498db;
+        border: 1px solid #3498db;
+      }
+
+      .btn-reorder:hover {
+        background: #f8f9fa;
+        transform: translateY(-2px);
+      }
+
+      .empty-orders {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .empty-orders i {
+        font-size: 4rem;
+        color: #bdc3c7;
+        margin-bottom: 1rem;
+      }
+
+      .empty-orders h3 {
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+      }
+
+      .empty-orders p {
+        color: #7f8c8d;
+        margin-bottom: 2rem;
+      }
+
+      .tracking-steps {
+        display: flex;
+        justify-content: space-between;
+        margin: 1.5rem 0;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        position: relative;
+      }
+
+      .tracking-step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1;
+        position: relative;
+        z-index: 2;
+      }
+
+      .step-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: white;
+        border: 2px solid #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0.5rem;
+        color: #7f8c8d;
+      }
+
+      .step-icon.active {
+        background: #3498db;
+        border-color: #3498db;
+        color: white;
+      }
+
+      .step-label {
+        font-size: 0.8rem;
+        color: #7f8c8d;
+        text-align: center;
+      }
+
+      .step-label.active {
+        color: #3498db;
+        font-weight: 500;
+      }
+
+      .tracking-line {
+        position: absolute;
+        top: 20px;
+        left: 10%;
+        right: 10%;
+        height: 2px;
+        background: #ddd;
+        z-index: 1;
+      }
+
+      .tracking-line-fill {
+        position: absolute;
+        top: 20px;
+        left: 10%;
+        height: 2px;
+        background: #3498db;
+        z-index: 1;
+        transition: width 0.5s;
+      }
+
+      @media (max-width: 768px) {
+        .order-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .order-footer {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .order-actions {
+          width: 100%;
+          flex-direction: column;
+        }
+
+        .btn-view-order,
+        .btn-reorder {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .tracking-steps {
+          flex-direction: column;
+          gap: 1rem;
+          align-items: flex-start;
+        }
+
+        .tracking-step {
+          flex-direction: row;
+          width: 100%;
+          gap: 1rem;
+        }
+
+        .tracking-line {
+          display: none;
+        }
+      }
+
+      .shipping-info {
+        background: #e8f6f3;
+        padding: 1rem;
+        border-radius: 8px;
+        margin: 1rem 0;
+        border-left: 4px solid #1abc9c;
+      }
+
+      .shipping-info h4 {
+        color: #1abc9c;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .estimated-delivery {
+        background: #eaf2f8;
+        padding: 1rem;
+        border-radius: 8px;
+        margin: 1rem 0;
+        border-left: 4px solid #3498db;
+      }
+
+      .estimated-delivery h4 {
+        color: #3498db;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      /* Order Details Modal Styles */
+      .order-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2000;
+        padding: 1rem;
+        animation: fadeIn 0.3s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .order-modal {
+        background: white;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 700px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        animation: slideUp 0.3s ease;
+      }
+
+      @keyframes slideUp {
+        from {
+          transform: translateY(30px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      .order-modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 2rem;
+        border-bottom: 1px solid #eee;
+        background: #f8f9fa;
+        border-radius: 12px 12px 0 0;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+
+      .order-modal-header h3 {
+        color: #2c3e50;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .close-modal {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: #7f8c8d;
+        cursor: pointer;
+        padding: 0.5rem;
+        border-radius: 4px;
+        transition: all 0.3s;
+      }
+
+      .close-modal:hover {
+        color: #e74c3c;
+        background: rgba(231, 76, 60, 0.1);
+      }
+
+      .order-modal-content {
+        padding: 2rem;
+      }
+
+      .order-details-section {
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid #eee;
+      }
+
+      .order-details-section:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      .order-details-section h4 {
+        color: #2c3e50;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1.1rem;
+      }
+
+      .order-info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 8px;
+      }
+
+      .info-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+      }
+
+      .info-label {
+        font-size: 0.85rem;
+        color: #7f8c8d;
+        font-weight: 500;
+      }
+
+      .info-value {
+        font-size: 1rem;
+        color: #2c3e50;
+        font-weight: 500;
+      }
+
+      .info-value.order-id {
+        font-family: "Courier New", monospace;
+        background: #2c3e50;
+        color: white;
+        padding: 0.3rem 0.8rem;
+        border-radius: 4px;
+        display: inline-block;
+        font-size: 0.9rem;
+      }
+
+      .info-value.order-total {
+        color: #e74c3c;
+        font-size: 1.2rem;
+        font-weight: 600;
+      }
+
+      .tracking-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #e8f6f3;
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        border-left: 4px solid #1abc9c;
+      }
+
+      .tracking-number {
+        color: #2c3e50;
+        font-size: 0.95rem;
+      }
+
+      .btn-track {
+        background: #1abc9c;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s;
+      }
+
+      .btn-track:hover {
+        background: #16a085;
+        transform: translateY(-2px);
+      }
+
+      .order-items-list {
+        max-height: 300px;
+        overflow-y: auto;
+        border: 1px solid #eee;
+        border-radius: 8px;
+      }
+
+      .order-item-detail {
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        border-bottom: 1px solid #f8f9fa;
+        transition: background 0.3s;
+      }
+
+      .order-item-detail:hover {
+        background: #f8f9fa;
+      }
+
+      .order-item-detail:last-child {
+        border-bottom: none;
+      }
+
+      .order-item-info {
+        flex: 1;
+        margin-left: 1rem;
+      }
+
+      .order-item-name {
+        font-weight: 500;
+        color: #2c3e50;
+        margin-bottom: 0.3rem;
+      }
+
+      .order-item-meta {
+        display: flex;
+        gap: 1rem;
+        font-size: 0.9rem;
+        color: #7f8c8d;
+      }
+
+      .order-item-subtotal {
+        color: #2c3e50;
+        font-weight: 500;
+        margin-left: auto;
+      }
+
+      .order-summary-breakdown {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 8px;
+      }
+
+      .summary-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #eee;
+      }
+
+      .summary-row:last-child {
+        border-bottom: none;
+      }
+
+      .summary-row.total {
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: #2c3e50;
+        padding-top: 1rem;
+        margin-top: 0.5rem;
+        border-top: 2px solid #3498db;
+      }
+
+      .order-modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        padding: 1.5rem 2rem;
+        border-top: 1px solid #eee;
+        background: #f8f9fa;
+        border-radius: 0 0 12px 12px;
+        position: sticky;
+        bottom: 0;
+      }
+
+      .btn-reorder-modal {
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s;
+      }
+
+      .btn-reorder-modal:hover {
+        background: #2980b9;
+        transform: translateY(-2px);
+      }
+
+      .btn-close-modal {
+        background: white;
+        color: #2c3e50;
+        border: 1px solid #ddd;
+        padding: 0.8rem 1.5rem;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s;
+      }
+
+      .btn-close-modal:hover {
+        background: #f8f9fa;
+      }
+
+      /* Scrollbar styling for modal */
+      .order-items-list::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .order-items-list::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+      }
+
+      .order-items-list::-webkit-scrollbar-thumb {
+        background: #3498db;
+        border-radius: 4px;
+      }
+
+      .order-items-list::-webkit-scrollbar-thumb:hover {
+        background: #2980b9;
+      }
+
+      @media (max-width: 768px) {
+        .order-modal {
+          max-height: 95vh;
+        }
+
+        .order-info-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .tracking-info {
+          flex-direction: column;
+          gap: 1rem;
+          align-items: flex-start;
+        }
+
+        .btn-track {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .order-item-meta {
+          flex-wrap: wrap;
+          gap: 0.5rem;
+        }
+
+        .order-modal-footer {
+          flex-direction: column;
+        }
+
+        .btn-reorder-modal,
+        .btn-close-modal {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="container">
+        <div class="nav-brand">
+          <a href="../index.html">🛒 CodeAlpha Store</a>
+        </div>
+
+        <div class="nav-links">
+          <a href="../index.html"><i class="fas fa-home"></i> Home</a>
+          <a href="products.html"><i class="fas fa-store"></i> Shop</a>
+          <a href="cart.html" id="cartLink">
+            <i class="fas fa-shopping-cart"></i> Cart
+            <span class="cart-count">0</span>
+          </a>
+          <a href="orders.html" class="active"
+            ><i class="fas fa-clipboard-list"></i> Orders</a
+          >
+
+          <div class="auth-buttons" id="authButtons">
+            <!-- Will be populated by JavaScript -->
+            <a href="login.html" class="btn-login">Login</a>
+            <a href="register.html" class="btn-register">Register</a>
+          </div>
+        </div>
+
+        <div class="mobile-menu-btn">
+          <i class="fas fa-bars"></i>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Orders Content -->
+    <main class="container orders-container">
+      <div class="orders-header">
+        <h1><i class="fas fa-clipboard-list"></i> My Orders</h1>
+        <p>View and track your order history</p>
+      </div>
+
+      <div class="orders-tabs">
+        <button class="orders-tab active" onclick="filterOrders('all')">
+          <i class="fas fa-list"></i> All Orders
+        </button>
+        <button class="orders-tab" onclick="filterOrders('pending')">
+          <i class="fas fa-clock"></i> Pending
+        </button>
+        <button class="orders-tab" onclick="filterOrders('processing')">
+          <i class="fas fa-cog"></i> Processing
+        </button>
+        <button class="orders-tab" onclick="filterOrders('shipped')">
+          <i class="fas fa-shipping-fast"></i> Shipped
+        </button>
+        <button class="orders-tab" onclick="filterOrders('delivered')">
+          <i class="fas fa-check-circle"></i> Delivered
+        </button>
+      </div>
+
+      <div class="orders-list" id="ordersList">
+        <!-- Orders will be loaded here -->
+        <div class="loading">Loading orders...</div>
+      </div>
+
+      <div style="text-align: center; margin-top: 3rem">
+        <a href="products.html" class="btn-view">
+          <i class="fas fa-arrow-left"></i> Continue Shopping
+        </a>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-section">
+          <h3>CodeAlpha Store</h3>
+          <p>Your one-stop shop for all needs</p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <a href="../index.html">Home</a>
+          <a href="products.html">Products</a>
+          <a href="cart.html">Cart</a>
+          <a href="orders.html">Orders</a>
+        </div>
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <p>Email: support@codealpha.com</p>
+          <p>Phone: +1 234 567 890</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 CodeAlpha E-Commerce Store. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="../js/app.js"></script>
+    <script>
+      let allOrders = [];
+      let currentFilter = "all";
+
+      document.addEventListener("DOMContentLoaded", function () {
+        updateCartCount();
+        checkAuthStatus();
+        loadOrders();
+      });
+
+      async function loadOrders() {
+        try {
+          const token = localStorage.getItem("token");
+          const ordersList = document.getElementById("ordersList");
+
+          if (!token) {
+            showLoginPrompt();
+            return;
+          }
+
+          ordersList.innerHTML = '<div class="loading">Loading orders...</div>';
+
+          // Try to fetch from API
+          const response = await fetch(
+            "http://localhost:5000/api/orders/my-orders",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (response.ok) {
+            const data = await response.json();
+            allOrders = data.orders || data;
+            displayOrders(allOrders);
+          } else if (response.status === 401) {
+            showLoginPrompt();
+          } else {
+            throw new Error("Failed to load orders from API");
+          }
+        } catch (error) {
+          console.error("Error loading orders:", error);
+          // Load from localStorage or show sample data
+          loadOrdersFromStorage();
+        }
+      }
+
+      function loadOrdersFromStorage() {
+        const storedOrders = localStorage.getItem("userOrders");
+        if (storedOrders) {
+          allOrders = JSON.parse(storedOrders);
+          displayOrders(allOrders);
+        } else {
+          showSampleOrders();
+        }
+      }
+
+      function saveOrdersToStorage() {
+        localStorage.setItem("userOrders", JSON.stringify(allOrders));
+      }
+
+      function displayOrders(orders) {
+        const ordersList = document.getElementById("ordersList");
+
+        if (!orders || orders.length === 0) {
+          ordersList.innerHTML = `
+                    <div class="empty-orders">
+                        <i class="fas fa-clipboard-list"></i>
+                        <h3>No Orders Yet</h3>
+                        <p>You haven't placed any orders. Start shopping now!</p>
+                        <a href="products.html" class="btn-view">Start Shopping</a>
+                    </div>
+                `;
+          return;
+        }
+
+        // Sort by date (newest first)
+        orders.sort(
+          (a, b) =>
+            new Date(b.createdAt || b.date) - new Date(a.createdAt || a.date)
+        );
+
+        // Filter orders
+        let filteredOrders = orders;
+        if (currentFilter !== "all") {
+          filteredOrders = orders.filter(
+            (order) =>
+              order.status && order.status.toLowerCase() === currentFilter
+          );
+        }
+
+        if (filteredOrders.length === 0) {
+          ordersList.innerHTML = `
+                    <div class="empty-orders">
+                        <i class="fas fa-filter"></i>
+                        <h3>No ${currentFilter} Orders</h3>
+                        <p>You don't have any orders with status: ${currentFilter}</p>
+                        <button onclick="filterOrders('all')" class="btn-view">
+                            View All Orders
+                        </button>
+                    </div>
+                `;
+          return;
+        }
+
+        ordersList.innerHTML = filteredOrders
+          .map(
+            (order) => `
+                <div class="order-card">
+                    <div class="order-header">
+                      <div class="order-info">
+                        <h3>Order <span class="order-id">#${getShortOrderId(
+                          order
+                        )}</span></h3>
+                            <div class="order-date">
+                                <i class="far fa-calendar"></i>
+                                ${new Date(
+                                  order.createdAt || order.date || Date.now()
+                                ).toLocaleDateString("en-US", {
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                })}
+                            </div>
+                        </div>
+                        <div class="order-status status-${(
+                          order.status || "pending"
+                        ).toLowerCase()}">
+                            <i class="fas ${getStatusIcon(order.status)}"></i>
+                            ${order.status || "Pending"}
+                        </div>
+                    </div>
+                    
+                    ${
+                      order.status === "shipped" ||
+                      order.status === "processing"
+                        ? `
+                        <div class="tracking-steps">
+                            <div class="tracking-step ${
+                              order.status === "pending" ||
+                              order.status === "processing" ||
+                              order.status === "shipped" ||
+                              order.status === "delivered"
+                                ? "active"
+                                : ""
+                            }">
+                                <div class="step-icon ${
+                                  order.status === "pending" ||
+                                  order.status === "processing" ||
+                                  order.status === "shipped" ||
+                                  order.status === "delivered"
+                                    ? "active"
+                                    : ""
+                                }">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </div>
+                                <div class="step-label ${
+                                  order.status === "pending" ||
+                                  order.status === "processing" ||
+                                  order.status === "shipped" ||
+                                  order.status === "delivered"
+                                    ? "active"
+                                    : ""
+                                }">Ordered</div>
+                            </div>
+                            <div class="tracking-step ${
+                              order.status === "processing" ||
+                              order.status === "shipped" ||
+                              order.status === "delivered"
+                                ? "active"
+                                : ""
+                            }">
+                                <div class="step-icon ${
+                                  order.status === "processing" ||
+                                  order.status === "shipped" ||
+                                  order.status === "delivered"
+                                    ? "active"
+                                    : ""
+                                }">
+                                    <i class="fas fa-cog"></i>
+                                </div>
+                                <div class="step-label ${
+                                  order.status === "processing" ||
+                                  order.status === "shipped" ||
+                                  order.status === "delivered"
+                                    ? "active"
+                                    : ""
+                                }">Processing</div>
+                            </div>
+                            <div class="tracking-step ${
+                              order.status === "shipped" ||
+                              order.status === "delivered"
+                                ? "active"
+                                : ""
+                            }">
+                                <div class="step-icon ${
+                                  order.status === "shipped" ||
+                                  order.status === "delivered"
+                                    ? "active"
+                                    : ""
+                                }">
+                                    <i class="fas fa-shipping-fast"></i>
+                                </div>
+                                <div class="step-label ${
+                                  order.status === "shipped" ||
+                                  order.status === "delivered"
+                                    ? "active"
+                                    : ""
+                                }">Shipped</div>
+                            </div>
+                            <div class="tracking-step ${
+                              order.status === "delivered" ? "active" : ""
+                            }">
+                                <div class="step-icon ${
+                                  order.status === "delivered" ? "active" : ""
+                                }">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="step-label ${
+                                  order.status === "delivered" ? "active" : ""
+                                }">Delivered</div>
+                            </div>
+                            <div class="tracking-line"></div>
+                            <div class="tracking-line-fill" style="width: ${getTrackingWidth(
+                              order.status
+                            )}%"></div>
+                        </div>
+                    `
+                        : ""
+                    }
+                    
+                    ${
+                      order.status === "shipped"
+                        ? `
+                        <div class="shipping-info">
+                            <h4><i class="fas fa-truck"></i> Shipping Information</h4>
+                            <p>Your order has been shipped and is on its way!</p>
+                            ${
+                              order.trackingNumber
+                                ? `<p><strong>Tracking Number:</strong> ${order.trackingNumber}</p>`
+                                : ""
+                            }
+                        </div>
+                    `
+                        : ""
+                    }
+                    
+                    ${
+                      order.status === "processing"
+                        ? `
+                        <div class="estimated-delivery">
+                            <h4><i class="far fa-clock"></i> Estimated Delivery</h4>
+                            <p>Expected delivery: ${getEstimatedDeliveryDate(
+                              order.createdAt || order.date
+                            )}</p>
+                        </div>
+                    `
+                        : ""
+                    }
+                    
+                    <div class="order-items">
+                        ${(order.products || order.items || [])
+                          .slice(0, 3)
+                          .map(
+                            (product) => `
+                            <div class="order-item">
+                                <img src="${
+                                  product.image ||
+                                  "https://via.placeholder.com/60x60?text=Product"
+                                }" 
+                                     alt="${product.name}" 
+                                     class="order-item-image"
+                                     onerror="this.src='https://via.placeholder.com/60x60?text=Product'">
+                                <div class="order-item-details">
+                                    <div class="order-item-name">${
+                                      product.name
+                                    }</div>
+                                    <div class="order-item-price">$${(
+                                      product.price || 0
+                                    ).toFixed(2)} each</div>
+                                </div>
+                                <div class="order-item-quantity">×${
+                                  product.quantity || 1
+                                }</div>
+                            </div>
+                        `
+                          )
+                          .join("")}
+                        
+                        ${
+                          (order.products || order.items || []).length > 3
+                            ? `
+                            <div style="text-align: center; padding: 1rem; color: #3498db; background: #f8f9fa; border-radius: 6px;">
+                                <i class="fas fa-ellipsis-h"></i> + ${
+                                  (order.products || order.items || []).length -
+                                  3
+                                } more items
+                            </div>
+                        `
+                            : ""
+                        }
+                    </div>
+                    
+                    <div class="order-footer">
+                        <div class="order-total">
+                            <i class="fas fa-receipt"></i>
+                            Total: $${(
+                              order.totalAmount ||
+                              order.total ||
+                              0
+                            ).toFixed(2)}
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn-view-order" onclick="viewOrderDetails('${
+                              order._id || order.id || ""
+                            }')">
+                                <i class="fas fa-eye"></i> View Details
+                            </button>
+                            <button class="btn-reorder" onclick="reorderOrder('${getFullOrderId(
+                              order
+                            )}')">
+    <i class="fas fa-redo"></i> Reorder All
+</button>
+                        </div>
+                    </div>
+                </div>
+            `
+          )
+          .join("");
+      }
+
+      function getStatusIcon(status) {
+        switch (status?.toLowerCase()) {
+          case "pending":
+            return "fa-clock";
+          case "processing":
+            return "fa-cog";
+          case "shipped":
+            return "fa-shipping-fast";
+          case "delivered":
+            return "fa-check-circle";
+          case "cancelled":
+            return "fa-times-circle";
+          default:
+            return "fa-clock";
+        }
+      }
+
+      function getTrackingWidth(status) {
+        switch (status?.toLowerCase()) {
+          case "pending":
+            return 25;
+          case "processing":
+            return 50;
+          case "shipped":
+            return 75;
+          case "delivered":
+            return 100;
+          default:
+            return 0;
+        }
+      }
+
+      function getEstimatedDeliveryDate(orderDate) {
+        const date = new Date(orderDate || Date.now());
+        date.setDate(date.getDate() + 7); // Add 7 days for delivery
+        return date.toLocaleDateString("en-US", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        });
+      }
+
+      function filterOrders(filter) {
+        currentFilter = filter;
+
+        // Update active tab
+        document.querySelectorAll(".orders-tab").forEach((tab) => {
+          tab.classList.remove("active");
+        });
+
+        // Find the clicked button
+        const buttons = document.querySelectorAll(".orders-tab");
+        buttons.forEach((btn) => {
+          if (btn.textContent.toLowerCase().includes(filter)) {
+            btn.classList.add("active");
+          }
+        });
+
+        displayOrders(allOrders);
+      }
+
+      function viewOrderDetails(orderId) {
+        const order = allOrders.find((o) => (o._id || o.id) === orderId);
+        if (!order) {
+          showToast("Order details not found", "error");
+          return;
+        }
+
+        // Show order details in a modal
+        showOrderDetailsModal(order);
+      }
+
+      function showOrderDetailsModal(order) {
+        const modalHTML = `
+        <div class="order-modal-overlay">
+            <div class="order-modal">
+                <div class="order-modal-header">
+                    <h3><i class="fas fa-file-invoice"></i> Order Details</h3>
+                    <button class="close-modal" onclick="closeOrderModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="order-modal-content">
+                    <div class="order-details-section">
+                        <h4><i class="fas fa-info-circle"></i> Order Information</h4>
+                        <div class="order-info-grid">
+                            <div class="info-item">
+                                <span class="info-label">Order ID:</span>
+                                <span class="info-value order-id">#${(
+                                  order._id ||
+                                  order.id ||
+                                  "ORD" +
+                                    Math.random()
+                                      .toString(36)
+                                      .substr(2, 9)
+                                      .toUpperCase()
+                                ).slice(-8)}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Order Date:</span>
+                                <span class="info-value">${new Date(
+                                  order.createdAt || order.date || Date.now()
+                                ).toLocaleDateString("en-US", {
+                                  weekday: "long",
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                })}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Order Status:</span>
+                                <span class="info-value status-${(
+                                  order.status || "pending"
+                                ).toLowerCase()}">
+                                    <i class="fas ${getStatusIcon(
+                                      order.status
+                                    )}"></i>
+                                    ${order.status || "Pending"}
+                                </span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Total Amount:</span>
+                                <span class="info-value order-total">$${(
+                                  order.totalAmount ||
+                                  order.total ||
+                                  0
+                                ).toFixed(2)}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    ${
+                      order.trackingNumber
+                        ? `
+                        <div class="order-details-section">
+                            <h4><i class="fas fa-shipping-fast"></i> Shipping Information</h4>
+                            <div class="tracking-info">
+                                <div class="tracking-number">
+                                    <strong>Tracking Number:</strong> ${order.trackingNumber}
+                                </div>
+                                <button class="btn-track" onclick="trackOrder('${order.trackingNumber}')">
+                                    <i class="fas fa-external-link-alt"></i> Track Package
+                                </button>
+                            </div>
+                        </div>
+                    `
+                        : ""
+                    }
+                    
+                    <div class="order-details-section">
+                        <h4><i class="fas fa-boxes"></i> Order Items (${
+                          order.products?.length || order.items?.length || 0
+                        })</h4>
+                        <div class="order-items-list">
+                            ${(order.products || order.items || [])
+                              .map(
+                                (item) => `
+                                <div class="order-item-detail">
+                                    <img src="${
+                                      item.image ||
+                                      "https://via.placeholder.com/60x60?text=Product"
+                                    }" 
+                                         alt="${item.name}" 
+                                         class="order-item-image"
+                                         onerror="this.src='https://via.placeholder.com/60x60?text=Product'">
+                                    <div class="order-item-info">
+                                        <div class="order-item-name">${
+                                          item.name
+                                        }</div>
+                                        <div class="order-item-meta">
+                                            <span class="order-item-price">$${(
+                                              item.price || 0
+                                            ).toFixed(2)} each</span>
+                                            <span class="order-item-quantity">× ${
+                                              item.quantity || 1
+                                            }</span>
+                                            <span class="order-item-subtotal">$${(
+                                              (item.price || 0) *
+                                              (item.quantity || 1)
+                                            ).toFixed(2)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                              )
+                              .join("")}
+                        </div>
+                    </div>
+                    
+                    <div class="order-details-section">
+                        <h4><i class="fas fa-calculator"></i> Order Summary</h4>
+                        <div class="order-summary-breakdown">
+                            <div class="summary-row">
+                                <span>Subtotal:</span>
+                                <span>$${(
+                                  (order.totalAmount || order.total || 0) * 0.9
+                                ).toFixed(2)}</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Shipping:</span>
+                                <span>${
+                                  order.totalAmount > 50 ? "FREE" : "$5.99"
+                                }</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Tax (10%):</span>
+                                <span>$${(
+                                  (order.totalAmount || order.total || 0) * 0.1
+                                ).toFixed(2)}</span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>Total:</span>
+                                <span>$${(
+                                  order.totalAmount ||
+                                  order.total ||
+                                  0
+                                ).toFixed(2)}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="order-modal-footer">
+                  <button class="btn-reorder-modal" onclick="reorderOrder('${getFullOrderId(
+                    order
+                  )}'); closeOrderModal();">
+    <i class="fas fa-redo"></i> Reorder All Items
+</button>
+                    <button class="btn-close-modal" onclick="closeOrderModal()">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+
+        const modal = document.createElement("div");
+        modal.innerHTML = modalHTML;
+        document.body.appendChild(modal);
+
+        // Prevent scrolling on body when modal is open
+        document.body.style.overflow = "hidden";
+      }
+      function getShortOrderId(order) {
+        const id = order._id || order.id || order.orderId || "";
+        if (!id)
+          return (
+            "ORDER" + Math.random().toString(36).substr(2, 6).toUpperCase()
+          );
+
+        // Return last 8 characters for display
+        return id.slice(-8).toUpperCase();
+      }
+
+      function getFullOrderId(order) {
+        return order._id || order.id || order.orderId || "";
+      }
+      function closeOrderModal() {
+        const modal = document.querySelector(".order-modal-overlay");
+        if (modal) {
+          modal.remove();
+        }
+        document.body.style.overflow = "auto";
+      }
+
+      function trackOrder(trackingNumber) {
+        // For demo purposes, open a tracking page in new tab
+        // In real app, this would link to carrier's tracking page
+        window.open(
+          `https://tools.usps.com/go/TrackConfirmAction?tLabels=${trackingNumber}`,
+          "_blank"
+        );
+      }
+
+      function reorderOrder(orderId) {
+        const order = allOrders.find((o) => (o._id || o.id) === orderId);
+        if (!order) {
+          showToast("Order not found", "error");
+          return;
+        }
+
+        const products = order.products || order.items || [];
+        let addedCount = 0;
+        let updatedCount = 0;
+
+        products.forEach((product) => {
+          // Use the main addToCart function from app.js
+          if (typeof addToCart === "function") {
+            addToCart(
+              product.productId ||
+                product._id ||
+                "reorder_" + Math.random().toString(36).substr(2, 9),
+              product.name,
+              product.price,
+              product.image,
+              product.quantity || 1
+            );
+            addedCount++;
+          } else {
+            // Fallback to local function
+            const success = addToCartProperly(
+              product.productId ||
+                product._id ||
+                "reorder_" + Math.random().toString(36).substr(2, 9),
+              product.name,
+              product.price,
+              product.image,
+              product.quantity || 1
+            );
+
+            if (success === "added") addedCount++;
+            if (success === "updated") updatedCount++;
+          }
+        });
+
+        // Show appropriate message
+        let message = "";
+        if (addedCount > 0 && updatedCount > 0) {
+          message = `${addedCount} new item(s) added, ${updatedCount} item(s) updated in cart`;
+        } else if (addedCount > 0) {
+          message = `${addedCount} item(s) added to cart`;
+        } else if (updatedCount > 0) {
+          message = `${updatedCount} item(s) updated in cart`;
+        } else {
+          message = "Items added to cart";
+        }
+
+        showToast(message);
+
+        // Ask if user wants to go to cart
+        setTimeout(() => {
+          if (confirm("Reorder complete! Would you like to go to your cart?")) {
+            window.location.href = "cart.html?checkout=true";
+          }
+        }, 1000);
+      }
+
+      // Replace the addToCartProperly function in orders.html with this:
+      function addToCartProperly(
+        productId,
+        productName,
+        price,
+        image,
+        quantity = 1
+      ) {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        // Clean up the productId to make it consistent
+        // Remove any "reorder_" prefix that might cause duplicates
+        const cleanProductId = productId.replace(/^reorder_/, "");
+
+        // Check if product already exists in cart (check by name for reordered items)
+        // First try exact productId match
+        let existingItemIndex = cart.findIndex(
+          (item) => item.productId === cleanProductId
+        );
+
+        // If not found by productId, try to find by name (for reordered items)
+        if (existingItemIndex === -1) {
+          existingItemIndex = cart.findIndex(
+            (item) =>
+              item.name.toLowerCase() === productName.toLowerCase() &&
+              item.price === price
+          );
+        }
+
+        if (existingItemIndex !== -1) {
+          // Update quantity if product exists
+          cart[existingItemIndex].quantity += quantity;
+          cart[existingItemIndex].reordered = true; // Mark as reordered
+          localStorage.setItem("cart", JSON.stringify(cart));
+          return "updated";
+        } else {
+          // Add new item with clean productId
+          cart.push({
+            productId: cleanProductId,
+            name: productName,
+            price: price,
+            quantity: quantity,
+            image:
+              image ||
+              `https://via.placeholder.com/100x100?text=${encodeURIComponent(
+                productName.substring(0, 20)
+              )}`,
+            reordered: true,
+            canBeRemoved: true, // Add flag to allow removal
+          });
+          localStorage.setItem("cart", JSON.stringify(cart));
+          return "added";
+        }
+      }
+
+      // Also update the reorderOrder function to use clean IDs:
+      function reorderOrder(orderId) {
+        console.log("Reorder button clicked with orderId:", orderId);
+
+        if (!orderId) {
+          showToast("Order ID not found", "error");
+          return;
+        }
+
+        const order = allOrders.find((o) => {
+          return o._id === orderId || o.id === orderId || o.orderId === orderId;
+        });
+
+        if (!order) {
+          showToast("Order not found", "error");
+          return;
+        }
+
+        const products = order.products || order.items || [];
+
+        if (products.length === 0) {
+          showToast("No items to reorder", "error");
+          return;
+        }
+
+        // Get current cart
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        products.forEach((product, index) => {
+          // Use the ORIGINAL product ID from the order
+          // First check for product.productId, then product._id
+          const originalProductId = product.productId || product._id;
+
+          // If no original ID exists, we need to create one that the backend recognizes
+          let productId;
+
+          if (originalProductId) {
+            // Use the original product ID - this is what the backend expects
+            productId = originalProductId;
+          } else {
+            // If there's no product ID in the order data, we need to map it
+            // You'll need to create a mapping of product names to actual product IDs
+            // For example:
+            const productMapping = {
+              "iPhone 15 Pro": "prod_iphone_15_pro",
+              "Sony Noise Cancelling Headphones": "prod_sony_headphones",
+              "Premium Coffee Maker": "prod_coffee_maker",
+              "Fitness Tracker Watch": "prod_fitness_tracker",
+              "Wireless Earbuds": "prod_wireless_earbuds",
+              // Add more mappings as needed
+            };
+
+            productId =
+              productMapping[product.name] ||
+              `prod_${product.name.toLowerCase().replace(/\s+/g, "_")}`;
+          }
+
+          cart.push({
+            productId: productId, // Use the actual/product ID, not a generated one
+            name: product.name || `Product ${index + 1}`,
+            price: product.price || 0,
+            quantity: product.quantity || 1,
+            image:
+              product.image ||
+              "https://via.placeholder.com/100x100?text=Product",
+            reordered: true,
+          });
+        });
+
+        // Save updated cart
+        localStorage.setItem("cart", JSON.stringify(cart));
+
+        // Update cart count display
+        updateCartCount();
+
+        showToast(`${products.length} item(s) reordered and added to cart`);
+
+        // Ask if user wants to go to cart
+        setTimeout(() => {
+          if (confirm("Reorder complete! Would you like to go to your cart?")) {
+            window.location.href = "cart.html?checkout=true";
+          }
+        }, 1000);
+      }
+
+      function showLoginPrompt() {
+        const ordersList = document.getElementById("ordersList");
+        ordersList.innerHTML = `
+                <div class="empty-orders">
+                    <i class="fas fa-user-lock"></i>
+                    <h3>Login Required</h3>
+                    <p>Please login to view your order history</p>
+                    <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap;">
+                        <a href="login.html?redirect=orders.html" class="btn-view">Login</a>
+                        <a href="register.html" class="btn-register">Register</a>
+                        <button onclick="showSampleOrders()" class="btn-reorder" style="margin-top: 0.5rem;">
+                            <i class="fas fa-eye"></i> View Sample Orders
+                        </button>
+                    </div>
+                </div>
+            `;
+      }
+
+      function showSampleOrders() {
+        allOrders = [
+          {
+            _id: "ORD12345678",
+            createdAt: new Date(
+              Date.now() - 2 * 24 * 60 * 60 * 1000
+            ).toISOString(),
+            status: "Delivered",
+            totalAmount: 149.99,
+            trackingNumber: "TRK7890123456",
+            products: [
+              {
+                productId: "prod1",
+                name: "iPhone 15 Pro",
+                price: 999,
+                quantity: 1,
+                image: "iphone15.jpg",
+              },
+              {
+                productId: "prod2",
+                name: "Sony Noise Cancelling Headphones",
+                price: 299,
+                quantity: 1,
+                image: "headphones.jpg",
+              },
+            ],
+          },
+          {
+            _id: "ORD87654321",
+            createdAt: new Date(
+              Date.now() - 5 * 24 * 60 * 60 * 1000
+            ).toISOString(),
+            status: "Shipped",
+            totalAmount: 89.99,
+            trackingNumber: "TRK1234567890",
+            products: [
+              {
+                productId: "prod3",
+                name: "Premium Coffee Maker",
+                price: 89.99,
+                quantity: 1,
+                image: "coffee-maker.jpg",
+              },
+            ],
+          },
+          {
+            _id: "ORD11223344",
+            createdAt: new Date(
+              Date.now() - 1 * 24 * 60 * 60 * 1000
+            ).toISOString(),
+            status: "Processing",
+            totalAmount: 249.5,
+            products: [
+              {
+                productId: "prod4",
+                name: "Fitness Tracker Watch",
+                price: 129.99,
+                quantity: 1,
+                image: "fitness-tracker.jpg",
+              },
+              {
+                productId: "prod5",
+                name: "Wireless Earbuds",
+                price: 79.99,
+                quantity: 1,
+                image: "earbuds.jpg",
+              },
+              {
+                productId: "prod6",
+                name: "Phone Case",
+                price: 19.99,
+                quantity: 2,
+                image: "phone-case.jpg",
+              },
+            ],
+          },
+          {
+            _id: "ORD55667788",
+            createdAt: new Date(
+              Date.now() - 10 * 24 * 60 * 60 * 1000
+            ).toISOString(),
+            status: "Pending",
+            totalAmount: 45.99,
+            products: [
+              {
+                productId: "prod7",
+                name: "USB-C Cable Pack",
+                price: 19.99,
+                quantity: 1,
+                image: "cable-pack.jpg",
+              },
+              {
+                productId: "prod8",
+                name: "Portable Power Bank",
+                price: 26.0,
+                quantity: 1,
+                image: "power-bank.jpg",
+              },
+            ],
+          },
+        ];
+
+        // Save to localStorage
+        saveOrdersToStorage();
+
+        displayOrders(allOrders);
+        showToast("Showing sample orders. Login to see your real orders.");
+      }
+
+      function showToast(message, type = "success") {
+        const existingToast = document.querySelector(".toast");
+        if (existingToast) {
+          existingToast.remove();
+        }
+
+        const toast = document.createElement("div");
+        toast.className = `toast ${type}`;
+        toast.innerHTML = `
+                <i class="fas fa-${
+                  type === "success" ? "check-circle" : "exclamation-circle"
+                }"></i>
+                <span>${message}</span>
+            `;
+
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+          toast.remove();
+        }, 3000);
+      }
+
+      async function checkAuthStatus() {
+        const token = localStorage.getItem("token");
+        const authButtons = document.getElementById("authButtons");
+
+        if (!authButtons) return;
+
+        if (token) {
+          try {
+            const response = await fetch("http://localhost:5000/api/auth/me", {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+
+            if (response.ok) {
+              const user = await response.json();
+              localStorage.setItem("user", JSON.stringify(user));
+              authButtons.innerHTML = `
+                            <span class="welcome">Welcome, ${user.username}</span>
+                            <a href="profile.html" class="btn-register">Profile</a>
+                            <a href="#" onclick="logout()" class="btn-login">Logout</a>
+                        `;
+            }
+          } catch (error) {
+            console.error("Error checking auth status:", error);
+          }
+        }
+      }
+      function updateCartCount() {
+        try {
+          const cart = JSON.parse(localStorage.getItem("cart")) || [];
+          const cartCount = cart.reduce(
+            (total, item) => total + item.quantity,
+            0
+          );
+
+          // Update cart count in navigation
+          const cartCountElements = document.querySelectorAll(".cart-count");
+          cartCountElements.forEach((element) => {
+            element.textContent = cartCount;
+          });
+        } catch (error) {
+          console.error("Error updating cart count:", error);
+        }
+      }
+      function logout() {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        showToast("Logged out successfully");
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      }
+
+      window.logout = logout;
+      window.filterOrders = filterOrders;
+      window.viewOrderDetails = viewOrderDetails;
+      window.reorderOrder = reorderOrder;
+      window.showSampleOrders = showSampleOrders;
+      // Make functions available globally
+      window.viewOrderDetails = viewOrderDetails;
+      window.closeOrderModal = closeOrderModal;
+      window.trackOrder = trackOrder;
+      window.reorderOrder = reorderOrder;
+
+      // Close modal when clicking outside
+      document.addEventListener("click", function (event) {
+        const modal = document.querySelector(".order-modal-overlay");
+        if (modal && event.target === modal) {
+          closeOrderModal();
+        }
+      });
+
+      // Close modal with Escape key
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+          closeOrderModal();
+        }
+      });
+    </script>
+  </body>
+</html>

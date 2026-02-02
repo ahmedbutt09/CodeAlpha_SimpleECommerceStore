@@ -1,0 +1,9 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "files.autoSave": "afterDelay",
+  "emmet.includeLanguages": {
+    "javascript": "html"
+  },
+  "workbench.colorTheme": "Default Dark+"
+}

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - CodeAlpha Store</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      .dashboard-container {
+        padding: 3rem 0;
+        min-height: 70vh;
+      }
+
+      .dashboard-header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .dashboard-header h1 {
+        color: #2c3e50;
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .dashboard-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2.5rem;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 250px;
+      }
+
+      .dashboard-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      .card-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        font-size: 2.5rem;
+        color: white;
+      }
+
+      .card-shop {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+      .card-cart {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      }
+      .card-orders {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      }
+      .card-profile {
+        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+      }
+      .card-admin {
+        background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+      }
+      .card-contact {
+        background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+      }
+
+      .dashboard-card h3 {
+        color: #2c3e50;
+        margin-bottom: 0.8rem;
+        font-size: 1.5rem;
+      }
+
+      .dashboard-card p {
+        color: #7f8c8d;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+      }
+
+      .card-btn {
+        padding: 0.8rem 2rem;
+        background: #3498db;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: auto;
+      }
+
+      .card-btn:hover {
+        background: #2980b9;
+        transform: scale(1.05);
+      }
+
+      .quick-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-top: 3rem;
+        max-width: 1200px;
+        margin: 3rem auto 0;
+      }
+
+      .stat-item {
+        background: white;
+        border-radius: 10px;
+        padding: 1.5rem;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .stat-number {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #3498db;
+        margin-bottom: 0.5rem;
+      }
+
+      .stat-label {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+      }
+
+      @media (max-width: 768px) {
+        .dashboard-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .dashboard-card {
+          min-height: 200px;
+          padding: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="container">
+        <div class="nav-brand">
+          <a href="../index.html">🛒 CodeAlpha Store</a>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="nav-search">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search products..."
+          />
+          <button id="searchBtn"><i class="fas fa-search"></i></button>
+        </div>
+
+        <div class="nav-links">
+          <a href="../index.html"><i class="fas fa-home"></i> Home</a>
+          <a href="dashboard.html" class="active"
+            ><i class="fas fa-tachometer-alt"></i> Dashboard</a
+          >
+          <a href="products.html"><i class="fas fa-store"></i> Shop</a>
+          <a href="cart.html" id="cartLink">
+            <i class="fas fa-shopping-cart"></i> Cart
+            <span class="cart-count">0</span>
+          </a>
+          <a href="orders.html"><i class="fas fa-clipboard-list"></i> Orders</a>
+          <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+          <a href="admin.html"><i class="fas fa-cog"></i> Admin</a>
+          <div class="auth-buttons" id="authButtons">
+            <!-- Will be populated by JavaScript -->
+            <a href="login.html" class="btn-login">Login</a>
+            <a href="register.html" class="btn-register">Register</a>
+          </div>
+        </div>
+
+        <div class="mobile-menu-btn">
+          <i class="fas fa-bars"></i>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Dashboard -->
+    <main class="dashboard-container">
+      <div class="dashboard-header">
+        <h1><i class="fas fa-tachometer-alt"></i> CodeAlpha Dashboard</h1>
+        <p id="welcomeMessage">
+          Access all features of your e-commerce store from one place
+        </p>
+      </div>
+
+      <div class="dashboard-grid">
+        <!-- Shop Card -->
+        <div
+          class="dashboard-card"
+          onclick="window.location.href='products.html'"
+        >
+          <div class="card-icon card-shop">
+            <i class="fas fa-store"></i>
+          </div>
+          <h3>Shop Products</h3>
+          <p>
+            Browse our complete collection of products with advanced filters and
+            search
+          </p>
+          <button class="card-btn">Go to Shop</button>
+        </div>
+
+        <!-- Shopping Cart -->
+        <div class="dashboard-card" onclick="window.location.href='cart.html'">
+          <div class="card-icon card-cart">
+            <i class="fas fa-shopping-cart"></i>
+          </div>
+          <h3>Shopping Cart</h3>
+          <p>
+            Manage your cart items, update quantities, and proceed to checkout
+          </p>
+          <button class="card-btn">View Cart</button>
+        </div>
+
+        <!-- Order History -->
+        <div
+          class="dashboard-card"
+          onclick="window.location.href='orders.html'"
+        >
+          <div class="card-icon card-orders">
+            <i class="fas fa-clipboard-list"></i>
+          </div>
+          <h3>Order History</h3>
+          <p>Track your orders, view order details, and manage returns</p>
+          <button class="card-btn">View Orders</button>
+        </div>
+
+        <!-- User Profile -->
+        <div
+          class="dashboard-card"
+          onclick="window.location.href='profile.html'"
+        >
+          <div class="card-icon card-profile">
+            <i class="fas fa-user-circle"></i>
+          </div>
+          <h3>User Profile</h3>
+          <p>
+            Update your personal information, manage addresses, and security
+            settings
+          </p>
+          <button class="card-btn">My Profile</button>
+        </div>
+
+        <!-- Admin Panel -->
+        <div class="dashboard-card" onclick="window.location.href='admin.html'">
+          <div class="card-icon card-admin">
+            <i class="fas fa-cog"></i>
+          </div>
+          <h3>Admin Panel</h3>
+          <p>Manage products, orders, users, and view store analytics</p>
+          <button class="card-btn">Admin Dashboard</button>
+        </div>
+
+        <!-- Contact Support -->
+        <div
+          class="dashboard-card"
+          onclick="window.location.href='contact.html'"
+        >
+          <div class="card-icon card-contact">
+            <i class="fas fa-headset"></i>
+          </div>
+          <h3>Contact Support</h3>
+          <p>Get help, submit inquiries, or provide feedback about our store</p>
+          <button class="card-btn">Contact Us</button>
+        </div>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="quick-stats">
+        <div class="stat-item">
+          <div class="stat-number" id="cartItemsCount">0</div>
+          <div class="stat-label">Items in Cart</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" id="productCount">0</div>
+          <div class="stat-label">Products Available</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" id="userOrders">0</div>
+          <div class="stat-label">Your Orders</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">24/7</div>
+          <div class="stat-label">Support Available</div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-section">
+          <h3>CodeAlpha Store</h3>
+          <p>Your one-stop shop for all needs</p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <a href="../index.html">Home</a>
+          <a href="dashboard.html">Dashboard</a>
+          <a href="products.html">Products</a>
+          <a href="cart.html">Cart</a>
+          <a href="orders.html">Orders</a>
+        </div>
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <p>Email: support@codealpha.com</p>
+          <p>Phone: +1 234 567 890</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 CodeAlpha E-Commerce Store. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="../js/app.js"></script>
+    <script>
+      // Dashboard-specific JavaScript
+      document.addEventListener("DOMContentLoaded", function () {
+        // Initialize dashboard
+        initializeDashboard();
+
+        // Load stats
+        loadDashboardStats();
+
+        // Setup event listeners
+        setupDashboardEvents();
+      });
+
+      function initializeDashboard() {
+        // Update cart count
+        updateCartCount();
+
+        // Check auth status
+        checkAuthStatus();
+
+        // Update welcome message
+        updateWelcomeMessage();
+      }
+
+      async function loadDashboardStats() {
+        try {
+          // Load cart stats
+          const cart = JSON.parse(localStorage.getItem("cart")) || [];
+          const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+          document.getElementById("cartItemsCount").textContent = totalItems;
+
+          // Load product count
+          const productsResponse = await fetch(
+            "http://localhost:5000/api/products"
+          );
+          const productsData = await productsResponse.json();
+          document.getElementById("productCount").textContent =
+            productsData.total || 0;
+
+          // Load user orders if logged in
+          const token = localStorage.getItem("token");
+          if (token) {
+            try {
+              const ordersResponse = await fetch(
+                "http://localhost:5000/api/orders/my-orders",
+                {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              );
+              if (ordersResponse.ok) {
+                const ordersData = await ordersResponse.json();
+                document.getElementById("userOrders").textContent =
+                  ordersData.orders?.length || 0;
+              }
+            } catch (error) {
+              console.error("Error loading orders:", error);
+            }
+          }
+        } catch (error) {
+          console.error("Error loading dashboard stats:", error);
+        }
+      }
+
+      function updateWelcomeMessage() {
+        const user = JSON.parse(localStorage.getItem("user"));
+        const welcomeMessage = document.getElementById("welcomeMessage");
+
+        if (user && user.username) {
+          welcomeMessage.innerHTML = `Welcome back, <strong>${user.username}</strong>! Access all features of your e-commerce store from one place.`;
+        }
+      }
+
+      function setupDashboardEvents() {
+        // Search functionality
+        const searchBtn = document.getElementById("searchBtn");
+        const searchInput = document.getElementById("searchInput");
+
+        if (searchBtn) {
+          searchBtn.addEventListener("click", performSearch);
+        }
+
+        if (searchInput) {
+          searchInput.addEventListener("keypress", function (e) {
+            if (e.key === "Enter") performSearch();
+          });
+        }
+      }
+
+      function performSearch() {
+        const searchInput = document.getElementById("searchInput");
+        const query = searchInput.value.trim();
+
+        if (query) {
+          window.location.href = `products.html?search=${encodeURIComponent(
+            query
+          )}`;
+        } else {
+          window.location.href = "products.html";
+        }
+      }
+
+      // Make logout function available globally
+      window.logout = function () {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        localStorage.removeItem("cart");
+        showToast("Logged out successfully");
+
+        setTimeout(() => {
+          window.location.href = "dashboard.html";
+        }, 1000);
+      };
+
+      function showToast(message, type = "success") {
+        // Remove existing toast
+        const existingToast = document.querySelector(".toast");
+        if (existingToast) {
+          existingToast.remove();
+        }
+
+        // Create new toast
+        const toast = document.createElement("div");
+        toast.className = `toast ${type}`;
+        toast.textContent = message;
+
+        document.body.appendChild(toast);
+
+        // Remove toast after 3 seconds
+        setTimeout(() => {
+          toast.remove();
+        }, 3000);
+      }
+    </script>
+  </body>
+</html>

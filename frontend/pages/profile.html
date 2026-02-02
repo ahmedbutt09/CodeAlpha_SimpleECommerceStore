@@ -1,0 +1,1752 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Profile - CodeAlpha Store</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      .profile-container {
+        padding: 3rem 0;
+        min-height: 70vh;
+      }
+      .btn-set-default {
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 0.3rem 0.8rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        transition: all 0.3s;
+      }
+
+      .btn-set-default:hover {
+        background: #2980b9;
+      }
+      .profile-header {
+        margin-bottom: 2rem;
+      }
+
+      .profile-header h1 {
+        color: #2c3e50;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .profile-content {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 2rem;
+      }
+
+      .profile-sidebar {
+        background: white;
+        border-radius: 10px;
+        padding: 2rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        height: fit-content;
+      }
+
+      .profile-avatar {
+        text-align: center;
+        margin-bottom: 1.5rem;
+      }
+
+      .avatar-image {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: #3498db;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        font-size: 3rem;
+        color: white;
+      }
+
+      .profile-name {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 0.2rem;
+      }
+
+      .profile-email {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+      }
+
+      .profile-stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin: 1.5rem 0;
+        text-align: center;
+      }
+
+      .stat-item {
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .stat-number {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #3498db;
+        margin-bottom: 0.2rem;
+      }
+
+      .stat-label {
+        font-size: 0.9rem;
+        color: #7f8c8d;
+      }
+
+      .profile-menu {
+        margin-top: 1.5rem;
+      }
+
+      .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 1rem;
+        color: #2c3e50;
+        text-decoration: none;
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
+        transition: all 0.3s;
+        cursor: pointer;
+      }
+
+      .menu-item:hover {
+        background: #f8f9fa;
+        color: #3498db;
+      }
+
+      .menu-item.active {
+        background: #3498db;
+        color: white;
+      }
+
+      .menu-item i {
+        width: 20px;
+        text-align: center;
+      }
+
+      .profile-main {
+        display: grid;
+        gap: 2rem;
+      }
+
+      .profile-section {
+        background: white;
+        border-radius: 10px;
+        padding: 2rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .section-title {
+        font-size: 1.3rem;
+        color: #2c3e50;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #3498db;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .btn-edit {
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s;
+      }
+
+      .btn-edit:hover {
+        background: #2980b9;
+        transform: translateY(-1px);
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .info-item {
+        margin-bottom: 1rem;
+      }
+
+      .info-label {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+        margin-bottom: 0.3rem;
+      }
+
+      .info-value {
+        color: #2c3e50;
+        font-weight: 500;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #2c3e50;
+        font-weight: 500;
+      }
+
+      .form-group input,
+      .form-group select {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s;
+      }
+
+      .form-group input:focus,
+      .form-group select:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+      }
+
+      .btn-save {
+        background: #2ecc71;
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      .btn-save:hover {
+        background: #27ae60;
+        transform: translateY(-2px);
+      }
+
+      .recent-orders {
+        overflow-x: auto;
+      }
+
+      .orders-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .orders-table th {
+        background: #f8f9fa;
+        color: #2c3e50;
+        font-weight: 600;
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 2px solid #eee;
+      }
+
+      .orders-table td {
+        padding: 1rem;
+        border-bottom: 1px solid #eee;
+        color: #2c3e50;
+      }
+
+      .order-status {
+        padding: 0.3rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        display: inline-block;
+      }
+
+      .status-pending {
+        background: #fef9e7;
+        color: #f39c12;
+      }
+      .status-processing {
+        background: #e8f6f3;
+        color: #1abc9c;
+      }
+      .status-delivered {
+        background: #eafaf1;
+        color: #2ecc71;
+      }
+      .status-shipped {
+        background: #eaf2f8;
+        color: #3498db;
+      }
+      .status-cancelled {
+        background: #fdedec;
+        color: #e74c3c;
+      }
+
+      .address-card {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        border-left: 4px solid #3498db;
+      }
+
+      .address-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+
+      .address-label {
+        font-weight: 600;
+        color: #2c3e50;
+        background: #3498db;
+        color: white;
+        padding: 0.3rem 0.8rem;
+        border-radius: 4px;
+      }
+
+      .address-actions {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .btn-small {
+        padding: 0.3rem 0.8rem;
+        font-size: 0.85rem;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .btn-edit-small {
+        background: #3498db;
+        color: white;
+      }
+
+      .btn-delete {
+        background: #e74c3c;
+        color: white;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: #7f8c8d;
+      }
+
+      .empty-state i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        color: #bdc3c7;
+      }
+
+      @media (max-width: 992px) {
+        .profile-content {
+          grid-template-columns: 1fr;
+        }
+
+        .profile-sidebar {
+          position: static;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .profile-stats {
+          grid-template-columns: 1fr;
+        }
+
+        .orders-table {
+          display: block;
+          overflow-x: auto;
+        }
+
+        .address-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 1rem;
+        }
+
+        .address-actions {
+          width: 100%;
+          justify-content: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="container">
+        <div class="nav-brand">
+          <a href="../index.html">🛒 CodeAlpha Store</a>
+        </div>
+
+        <div class="nav-links">
+          <a href="../index.html"><i class="fas fa-home"></i> Home</a>
+          <a href="cart.html" id="cartLink">
+            <i class="fas fa-shopping-cart"></i> Cart
+            <span class="cart-count">0</span>
+          </a>
+          <div class="auth-buttons">
+            <!-- Will be populated by JavaScript -->
+            <a href="login.html" class="btn-login">Login</a>
+            <a href="register.html" class="btn-register">Register</a>
+          </div>
+        </div>
+
+        <div class="mobile-menu-btn">
+          <i class="fas fa-bars"></i>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Profile Content -->
+    <main class="container profile-container">
+      <div class="profile-header">
+        <h1><i class="fas fa-user-circle"></i> My Profile</h1>
+        <p>Manage your account and view your activity</p>
+      </div>
+
+      <div class="profile-content">
+        <!-- Sidebar -->
+        <div class="profile-sidebar">
+          <div class="profile-avatar">
+            <div class="avatar-image" id="avatarInitials">
+              <!-- Initials will be set by JS -->
+            </div>
+            <div class="profile-name" id="profileName">Loading...</div>
+            <div class="profile-email" id="profileEmail">Loading...</div>
+          </div>
+
+          <div class="profile-stats">
+            <div class="stat-item">
+              <div class="stat-number" id="ordersCount">0</div>
+              <div class="stat-label">Orders</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number" id="memberSince">0</div>
+              <div class="stat-label">Days</div>
+            </div>
+          </div>
+
+          <div class="profile-menu">
+            <div
+              class="menu-item active"
+              onclick="showSection('personal-info')"
+            >
+              <i class="fas fa-user"></i> Personal Info
+            </div>
+            <div class="menu-item" onclick="showSection('orders')">
+              <i class="fas fa-clipboard-list"></i> My Orders
+            </div>
+            <div class="menu-item" onclick="showSection('addresses')">
+              <i class="fas fa-map-marker-alt"></i> Addresses
+            </div>
+            <div class="menu-item" onclick="showSection('security')">
+              <i class="fas fa-shield-alt"></i> Security
+            </div>
+            <div class="menu-item" onclick="logout()">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="profile-main">
+          <!-- Personal Info Section -->
+          <div class="profile-section" id="personal-info-section">
+            <div class="section-title">
+              Personal Information
+              <button
+                class="btn-edit"
+                onclick="toggleEditMode('personal-info')"
+              >
+                <i class="fas fa-edit"></i> Edit
+              </button>
+            </div>
+
+            <div class="info-grid">
+              <div class="info-item">
+                <div class="info-label">Full Name</div>
+                <div class="info-value" id="fullName">Loading...</div>
+                <input
+                  type="text"
+                  id="editFullName"
+                  class="form-input"
+                  style="display: none"
+                />
+              </div>
+              <div class="info-item">
+                <div class="info-label">Email Address</div>
+                <div class="info-value" id="displayEmail">Loading...</div>
+                <input
+                  type="email"
+                  id="editEmail"
+                  class="form-input"
+                  style="display: none"
+                />
+              </div>
+              <div class="info-item">
+                <div class="info-label">Phone Number</div>
+                <div class="info-value" id="phoneNumber">Not set</div>
+                <input
+                  type="tel"
+                  id="editPhone"
+                  class="form-input"
+                  style="display: none"
+                />
+              </div>
+              <div class="info-item">
+                <div class="info-label">Member Since</div>
+                <div class="info-value" id="joinDate">Loading...</div>
+              </div>
+            </div>
+
+            <div
+              id="personal-info-actions"
+              style="display: none; margin-top: 2rem"
+            >
+              <button class="btn-save" onclick="savePersonalInfo()">
+                <i class="fas fa-save"></i> Save Changes
+              </button>
+              <button
+                class="btn-view"
+                onclick="toggleEditMode('personal-info')"
+                style="margin-left: 1rem"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+
+          <!-- Orders Section -->
+          <div
+            class="profile-section"
+            id="orders-section"
+            style="display: none"
+          >
+            <div class="section-title">
+              My Orders (All)
+              <a href="orders.html" class="btn-edit">
+                <i class="fas fa-external-link-alt"></i> View Details
+              </a>
+            </div>
+
+            <div class="recent-orders">
+              <table class="orders-table">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Date</th>
+                    <th>Items</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="recentOrdersTable">
+                  <!-- Orders will be loaded here -->
+                  <tr>
+                    <td colspan="5" style="text-align: center; padding: 2rem">
+                      <div class="loading">Loading orders...</div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Addresses Section -->
+          <div
+            class="profile-section"
+            id="addresses-section"
+            style="display: none"
+          >
+            <div class="section-title">
+              Saved Addresses
+              <div style="display: flex; gap: 0.5rem">
+                <button class="btn-edit" onclick="addNewAddress()">
+                  <i class="fas fa-plus"></i> Add New
+                </button>
+                <button
+                  class="btn-edit"
+                  onclick="loadUserAddresses()"
+                  style="background: #3498db"
+                >
+                  <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+              </div>
+            </div>
+
+            <div id="addressesList">
+              <!-- Addresses will be loaded here -->
+              <div class="empty-state">
+                <i class="fas fa-map-marker-alt"></i>
+                <p>No saved addresses</p>
+              </div>
+            </div>
+
+            <div id="newAddressForm" style="display: none; margin-top: 2rem">
+              <h3 style="margin-bottom: 1.5rem; color: #2c3e50">
+                Add New Address
+              </h3>
+              <form id="addressForm" onsubmit="saveAddress(event)">
+                <div class="form-group">
+                  <label for="addressLabel">Address Label</label>
+                  <input
+                    type="text"
+                    id="addressLabel"
+                    placeholder="e.g., Home, Office"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="streetAddress">Street Address</label>
+                  <input type="text" id="streetAddress" required />
+                </div>
+                <div class="form-group">
+                  <label for="city">City</label>
+                  <input type="text" id="city" required />
+                </div>
+                <div class="form-group">
+                  <label for="zipCode">ZIP Code</label>
+                  <input type="text" id="zipCode" required />
+                </div>
+                <div class="form-group">
+                  <label for="country">Country</label>
+                  <select id="country" required>
+                    <option value="">Select Country</option>
+                    <option value="PK">Pakistan</option>
+                    <option value="US">United States</option>
+                    <option value="IN">India</option>
+                    <option value="UK">United Kingdom</option>
+                  </select>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem">
+                  <button type="submit" class="btn-save">Save Address</button>
+                  <button
+                    type="button"
+                    class="btn-view"
+                    onclick="cancelAddAddress()"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Security Section -->
+          <div
+            class="profile-section"
+            id="security-section"
+            style="display: none"
+          >
+            <div class="section-title">Security Settings</div>
+
+            <div class="info-grid">
+              <div class="info-item">
+                <div class="info-label">Password</div>
+                <div class="info-value">••••••••</div>
+                <button
+                  class="btn-edit"
+                  onclick="togglePasswordForm()"
+                  style="margin-top: 0.5rem"
+                >
+                  <i class="fas fa-key"></i> Change Password
+                </button>
+              </div>
+              <div class="info-item">
+                <div class="info-label">Two-Factor Authentication</div>
+                <div class="info-value" id="2faStatus">Not enabled</div>
+                <button
+                  class="btn-edit"
+                  onclick="toggle2FA()"
+                  id="2faButton"
+                  style="margin-top: 0.5rem"
+                >
+                  <i class="fas fa-shield-alt"></i> Enable 2FA
+                </button>
+              </div>
+            </div>
+
+            <div
+              id="changePasswordForm"
+              style="display: none; margin-top: 2rem"
+            >
+              <h3 style="margin-bottom: 1.5rem; color: #2c3e50">
+                Change Password
+              </h3>
+              <form id="passwordForm" onsubmit="changePassword(event)">
+                <div class="form-group">
+                  <label for="currentPassword">Current Password</label>
+                  <input type="password" id="currentPassword" required />
+                </div>
+                <div class="form-group">
+                  <label for="newPassword">New Password</label>
+                  <input
+                    type="password"
+                    id="newPassword"
+                    required
+                    minlength="6"
+                  />
+                  <small style="color: #7f8c8d; font-size: 0.85rem"
+                    >Password must be at least 6 characters</small
+                  >
+                </div>
+                <div class="form-group">
+                  <label for="confirmPassword">Confirm New Password</label>
+                  <input
+                    type="password"
+                    id="confirmPassword"
+                    required
+                    minlength="6"
+                  />
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem">
+                  <button type="submit" class="btn-save">
+                    Update Password
+                  </button>
+                  <button
+                    type="button"
+                    class="btn-view"
+                    onclick="togglePasswordForm()"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-section">
+          <h3>CodeAlpha Store</h3>
+          <p>Your one-stop shop for all needs</p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <a href="../index.html">Home</a>
+          <a href="../index.html#products">Products</a>
+          <a href="cart.html">Cart</a>
+          <a href="orders.html">Orders</a>
+          <a href="profile.html">Profile</a>
+        </div>
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <p>Email: support@codealpha.com</p>
+          <p>Phone: +1 234 567 890</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 CodeAlpha E-Commerce Store. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+      let currentUser = null;
+      let userOrders = [];
+      let userAddresses = [];
+      let is2FAEnabled = false;
+
+      document.addEventListener("DOMContentLoaded", function () {
+        updateCartCount();
+        checkAuthStatus();
+        loadUserProfile();
+        loadUserOrders();
+        loadUserAddresses();
+        setTimeout(() => {
+          migrateAddressesToBackend();
+        }, 2000);
+      });
+      async function migrateAddressesToBackend() {
+        try {
+          const storedAddresses = localStorage.getItem("userAddresses");
+          if (!storedAddresses) return;
+
+          const addresses = JSON.parse(storedAddresses);
+          if (!addresses.length) return;
+
+          const token = localStorage.getItem("token");
+          if (!token) return;
+
+          console.log("Migrating addresses from localStorage to backend...");
+
+          // Move each address to backend
+          for (const address of addresses) {
+            try {
+              await fetch("http://localhost:5000/api/users/addresses", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                  label: address.label || "Migrated Address",
+                  streetAddress: address.streetAddress || "",
+                  city: address.city || "",
+                  zipCode: address.zipCode || "",
+                  country: address.country || "",
+                  isDefault: address.isDefault || false,
+                }),
+              });
+            } catch (error) {
+              console.log("Failed to migrate one address:", error);
+            }
+          }
+
+          // Clear localStorage after migration
+          localStorage.removeItem("userAddresses");
+          console.log("Migration complete");
+        } catch (error) {
+          console.error("Migration failed:", error);
+        }
+      }
+      async function loadUserProfile() {
+        try {
+          const token = localStorage.getItem("token");
+
+          if (!token) {
+            window.location.href = "login.html?redirect=profile";
+            return;
+          }
+
+          // Try the users/profile endpoint first
+          const response = await fetch(
+            "http://localhost:5000/api/users/profile",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (response.ok) {
+            currentUser = await response.json();
+            displayUserProfile();
+          } else {
+            // Fallback to auth/me endpoint
+            const authResponse = await fetch(
+              "http://localhost:5000/api/auth/me",
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+
+            if (authResponse.ok) {
+              currentUser = await authResponse.json();
+              displayUserProfile();
+            } else {
+              window.location.href = "login.html?redirect=profile";
+            }
+          }
+        } catch (error) {
+          console.error("Error loading profile:", error);
+          // For demo, show sample data
+          showSampleProfile();
+        }
+      }
+
+      function displayUserProfile() {
+        if (!currentUser) return;
+
+        // Set avatar initials
+        const initials = currentUser.username
+          .split(" ")
+          .map((name) => name[0])
+          .join("")
+          .toUpperCase()
+          .slice(0, 2);
+
+        document.getElementById("avatarInitials").textContent = initials;
+        document.getElementById("profileName").textContent =
+          currentUser.username;
+        document.getElementById("profileEmail").textContent = currentUser.email;
+        document.getElementById("fullName").textContent = currentUser.username;
+        document.getElementById("displayEmail").textContent = currentUser.email;
+
+        // Set phone if available
+        if (currentUser.phone) {
+          document.getElementById("phoneNumber").textContent =
+            currentUser.phone;
+        }
+
+        // Set member since
+        if (currentUser.createdAt) {
+          const joinDate = new Date(currentUser.createdAt);
+          document.getElementById("joinDate").textContent =
+            joinDate.toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            });
+
+          // Calculate days as member
+          const daysAsMember = Math.floor(
+            (new Date() - joinDate) / (1000 * 60 * 60 * 24)
+          );
+          document.getElementById("memberSince").textContent = daysAsMember;
+        }
+      }
+
+      async function loadUserOrders() {
+        try {
+          const token = localStorage.getItem("token");
+
+          if (!token) return;
+
+          const response = await fetch(
+            "http://localhost:5000/api/orders/my-orders",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (response.ok) {
+            const data = await response.json();
+            userOrders = data.orders || data || [];
+            displayAllOrders();
+          }
+        } catch (error) {
+          console.error("Error loading orders:", error);
+          // Load from localStorage as fallback
+          loadOrdersFromStorage();
+        }
+      }
+
+      function loadOrdersFromStorage() {
+        const storedOrders = localStorage.getItem("userOrders");
+        if (storedOrders) {
+          userOrders = JSON.parse(storedOrders);
+          displayAllOrders();
+        } else {
+          showSampleOrders();
+        }
+      }
+
+      function displayAllOrders() {
+        const ordersTable = document.getElementById("recentOrdersTable");
+        const ordersCount = document.getElementById("ordersCount");
+
+        if (!userOrders || userOrders.length === 0) {
+          ordersTable.innerHTML = `
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 2rem;">
+                            <div class="empty-state">
+                                <i class="fas fa-clipboard-list"></i>
+                                <p>No orders yet</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+          ordersCount.textContent = "0";
+          return;
+        }
+
+        // Sort by date (newest first)
+        userOrders.sort(
+          (a, b) =>
+            new Date(b.createdAt || b.date) - new Date(a.createdAt || a.date)
+        );
+
+        ordersCount.textContent = userOrders.length;
+
+        ordersTable.innerHTML = userOrders
+          .map(
+            (order) => `
+                <tr>
+                    <td>#${(
+                      order._id ||
+                      order.id ||
+                      "ORD" + Math.random().toString(36).substr(2, 9)
+                    )
+                      .slice(-8)
+                      .toUpperCase()}</td>
+                    <td>${new Date(
+                      order.createdAt || order.date || Date.now()
+                    ).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })}</td>
+                    <td>${(order.products || order.items || []).length} item${
+              (order.products || order.items || []).length > 1 ? "s" : ""
+            }</td>
+                    <td>$${(order.totalAmount || order.total || 0).toFixed(
+                      2
+                    )}</td>
+                    <td>
+                        <span class="order-status status-${(
+                          order.status || "pending"
+                        ).toLowerCase()}">
+                            ${order.status || "Pending"}
+                        </span>
+                    </td>
+                </tr>
+            `
+          )
+          .join("");
+      }
+
+      // Load user addresses from backend
+      async function loadUserAddresses() {
+        try {
+          const token = localStorage.getItem("token");
+
+          if (!token) {
+            console.log("User not logged in, showing empty addresses");
+            userAddresses = [];
+            displayAddresses();
+            return;
+          }
+
+          console.log("Loading addresses from backend...");
+          const response = await fetch(
+            "http://localhost:5000/api/users/addresses",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          console.log("Response status:", response.status);
+
+          if (response.ok) {
+            userAddresses = await response.json();
+            console.log("Successfully loaded addresses:", userAddresses);
+
+            // Clear localStorage addresses (only keep in database)
+            localStorage.removeItem("userAddresses");
+
+            displayAddresses();
+          } else if (response.status === 404) {
+            // 404 means no addresses yet - not an error
+            console.log("No addresses found (404)");
+            userAddresses = [];
+            displayAddresses();
+          } else {
+            console.error("Failed to load addresses:", response.status);
+            // Don't fallback to localStorage - just show empty
+            userAddresses = [];
+            displayAddresses();
+            throw new Error(`Failed to load addresses: ${response.status}`);
+          }
+        } catch (error) {
+          console.error("Error loading addresses:", error);
+          // Don't use localStorage - just show empty
+          userAddresses = [];
+          displayAddresses();
+          showToast("Could not load addresses. Please try again.", "error");
+        }
+      }
+
+      // Save address to backend
+      async function saveAddress(event) {
+        event.preventDefault();
+
+        try {
+          const token = localStorage.getItem("token");
+
+          if (!token) {
+            showToast("Please login to save address", "error");
+            window.location.href = "login.html?redirect=profile";
+            return;
+          }
+
+          const address = {
+            label: document.getElementById("addressLabel").value,
+            streetAddress: document.getElementById("streetAddress").value,
+            city: document.getElementById("city").value,
+            zipCode: document.getElementById("zipCode").value,
+            country: document.getElementById("country").value,
+          };
+
+          const response = await fetch(
+            "http://localhost:5000/api/users/addresses",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify(address),
+            }
+          );
+
+          if (response.ok) {
+            const data = await response.json();
+            showToast("Address saved successfully!");
+            cancelAddAddress();
+            await loadUserAddresses(); // Reload from backend
+
+            // Clear localStorage
+            localStorage.removeItem("userAddresses");
+          } else {
+            const errorData = await response.json();
+            throw new Error(errorData.error || "Failed to save address");
+          }
+        } catch (error) {
+          console.error("Error saving address:", error);
+          showToast(error.message, "error");
+        }
+      }
+
+      // Edit address
+      async function editAddress(index) {
+        const address = userAddresses[index];
+        if (!address) {
+          showToast("Address not found", "error");
+          return;
+        }
+
+        if (confirm(`Edit "${address.label}" address?`)) {
+          // Store the address ID for update
+          editingAddressId = address._id;
+
+          if (!editingAddressId) {
+            showToast("Address ID not found", "error");
+            return;
+          }
+
+          addNewAddress();
+
+          // Fill form with existing data
+          document.getElementById("addressLabel").value = address.label || "";
+          document.getElementById("streetAddress").value =
+            address.streetAddress || "";
+          document.getElementById("city").value = address.city || "";
+          document.getElementById("zipCode").value = address.zipCode || "";
+          document.getElementById("country").value = address.country || "";
+
+          // Change form to update mode
+          document.querySelector("#newAddressForm h3").textContent =
+            "Edit Address";
+          document.querySelector(
+            '#newAddressForm button[type="submit"]'
+          ).textContent = "Update Address";
+
+          // Store original save function and replace with update
+          originalSaveAddress = saveAddress;
+
+          // Replace form submit handler
+          document.getElementById("addressForm").onsubmit = async function (e) {
+            e.preventDefault();
+            await updateAddress(editingAddressId);
+          };
+        }
+      }
+
+      // Update address in backend
+      async function updateAddress(addressId) {
+        try {
+          const token = localStorage.getItem("token");
+
+          if (!token) {
+            showToast("Please login to update address", "error");
+            return;
+          }
+
+          const address = {
+            label: document.getElementById("addressLabel").value,
+            streetAddress: document.getElementById("streetAddress").value,
+            city: document.getElementById("city").value,
+            zipCode: document.getElementById("zipCode").value,
+            country: document.getElementById("country").value,
+          };
+
+          const response = await fetch(
+            `http://localhost:5000/api/users/addresses/${addressId}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify(address),
+            }
+          );
+
+          if (response.ok) {
+            showToast("Address updated successfully!");
+            cancelAddAddress();
+            await loadUserAddresses(); // Reload addresses from backend
+          } else {
+            const errorData = await response.json();
+            throw new Error(errorData.error || "Failed to update address");
+          }
+        } catch (error) {
+          console.error("Error updating address:", error);
+          showToast(error.message, "error");
+        }
+      }
+
+      // Delete address from backend
+      async function deleteAddress(addressId) {
+        if (!confirm("Are you sure you want to delete this address?")) {
+          return;
+        }
+
+        const originalAddresses = [...userAddresses]; // Backup
+
+        try {
+          const token = localStorage.getItem("token");
+
+          if (!token) {
+            showToast("Please login to delete address", "error");
+            return;
+          }
+
+          // Optimistic UI update - remove from array immediately
+          userAddresses = userAddresses.filter(
+            (addr) => addr._id !== addressId
+          );
+          displayAddresses(); // Update UI immediately
+
+          const response = await fetch(
+            `http://localhost:5000/api/users/addresses/${addressId}`,
+            {
+              method: "DELETE",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (response.ok) {
+            showToast("Address deleted successfully!");
+            // Already updated UI, just verify with backend
+            await loadUserAddresses();
+          } else {
+            // Rollback on error
+            userAddresses = originalAddresses;
+            displayAddresses();
+
+            const errorData = await response.json();
+            throw new Error(errorData.error || "Failed to delete address");
+          }
+        } catch (error) {
+          console.error("Error deleting address:", error);
+          showToast(error.message, "error");
+
+          // Restore original addresses on error
+          userAddresses = originalAddresses;
+          displayAddresses();
+        }
+      }
+      // Cancel add/edit address (reset form)
+      function cancelAddAddress() {
+        document.getElementById("addressesList").style.display = "block";
+        document.getElementById("newAddressForm").style.display = "none";
+        document.getElementById("addressForm").reset();
+
+        // Reset form title and button
+        document.querySelector("#newAddressForm h3").textContent =
+          "Add New Address";
+        document.querySelector(
+          '#newAddressForm button[type="submit"]'
+        ).textContent = "Save Address";
+
+        // Reset form handler to original save function
+        document.getElementById("addressForm").onsubmit = saveAddress;
+
+        editingAddressId = null;
+      }
+
+      // Update displayAddresses function to include proper IDs
+      function displayAddresses() {
+        const addressesList = document.getElementById("addressesList");
+
+        if (userAddresses.length === 0) {
+          addressesList.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-map-marker-alt"></i>
+                <p>No saved addresses</p>
+                <p style="font-size: 0.9rem; margin-top: 0.5rem;">Add your first address to make checkout faster!</p>
+            </div>
+        `;
+          return;
+        }
+
+        addressesList.innerHTML = userAddresses
+          .map(
+            (address, index) => `
+        <div class="address-card">
+            <div class="address-header">
+                <div class="address-label">
+                    ${address.label || "Address " + (index + 1)}
+                    
+                </div>
+                <div class="address-actions">
+                    <button class="btn-small btn-edit-small" onclick="editAddress(${index})">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                   
+                    <button class="btn-small btn-delete" onclick="deleteAddress('${
+                      address._id
+                    }')">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </div>
+            </div>
+            <div class="address-details">
+                <p style="margin-bottom: 0.5rem;">${address.streetAddress}</p>
+                <p style="color: #7f8c8d; font-size: 0.9rem;">
+                    ${address.city}, ${address.zipCode}, ${address.country}
+                </p>
+            </div>
+        </div>
+    `
+          )
+          .join("");
+      }
+
+      // Add variables at the top of your script
+      let editingAddressId = null;
+      let originalSaveAddress = null;
+
+      function showSection(sectionId) {
+        // Hide all sections
+        document.querySelectorAll(".profile-section").forEach((section) => {
+          section.style.display = "none";
+        });
+
+        // Show selected section
+        document.getElementById(sectionId + "-section").style.display = "block";
+
+        // Update active menu item
+        document.querySelectorAll(".menu-item").forEach((item) => {
+          item.classList.remove("active");
+        });
+        event.target.classList.add("active");
+      }
+
+      function toggleEditMode(section) {
+        if (section === "personal-info") {
+          const isEditing =
+            document.getElementById("personal-info-actions").style.display ===
+            "block";
+
+          if (isEditing) {
+            // Cancel edit mode
+            document.getElementById("personal-info-actions").style.display =
+              "none";
+            document
+              .querySelectorAll("#personal-info-section .form-input")
+              .forEach((input) => {
+                input.style.display = "none";
+              });
+            document
+              .querySelectorAll("#personal-info-section .info-value")
+              .forEach((span) => {
+                span.style.display = "block";
+              });
+          } else {
+            // Enter edit mode
+            document.getElementById("personal-info-actions").style.display =
+              "block";
+            document
+              .querySelectorAll("#personal-info-section .info-value")
+              .forEach((span) => {
+                span.style.display = "none";
+              });
+
+            // Set current values in inputs
+            document.getElementById("editFullName").value =
+              document.getElementById("fullName").textContent;
+            document.getElementById("editEmail").value =
+              document.getElementById("displayEmail").textContent;
+            document.getElementById("editPhone").value =
+              document.getElementById("phoneNumber").textContent === "Not set"
+                ? ""
+                : document.getElementById("phoneNumber").textContent;
+
+            document
+              .querySelectorAll("#personal-info-section .form-input")
+              .forEach((input) => {
+                input.style.display = "block";
+              });
+          }
+        }
+      }
+
+      async function savePersonalInfo() {
+        const fullName = document.getElementById("editFullName").value;
+        const email = document.getElementById("editEmail").value;
+        const phone = document.getElementById("editPhone").value;
+
+        try {
+          const token = localStorage.getItem("token");
+
+          if (!token) {
+            showToast("Please login to update profile", "error");
+            return;
+          }
+
+          const response = await fetch(
+            "http://localhost:5000/api/users/profile",
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({
+                username: fullName,
+                email: email,
+                phone: phone || "",
+              }),
+            }
+          );
+
+          const data = await response.json();
+
+          if (response.ok) {
+            // Update local user data
+            currentUser = data.user;
+            localStorage.setItem("user", JSON.stringify(data.user));
+
+            showToast("Profile updated successfully!");
+            toggleEditMode("personal-info");
+            displayUserProfile();
+          } else {
+            throw new Error(
+              data.error || data.message || "Failed to update profile"
+            );
+          }
+        } catch (error) {
+          console.error("Error updating profile:", error);
+          showToast(error.message, "error");
+        }
+      }
+
+      function addNewAddress() {
+        document.getElementById("addressesList").style.display = "none";
+        document.getElementById("newAddressForm").style.display = "block";
+      }
+
+      function cancelAddAddress() {
+        document.getElementById("addressesList").style.display = "block";
+        document.getElementById("newAddressForm").style.display = "none";
+        document.getElementById("addressForm").reset();
+      }
+
+      function togglePasswordForm() {
+        const form = document.getElementById("changePasswordForm");
+        if (form.style.display === "none") {
+          form.style.display = "block";
+          document.getElementById("passwordForm").reset();
+        } else {
+          form.style.display = "none";
+        }
+      }
+
+      async function changePassword(event) {
+        event.preventDefault();
+
+        const currentPassword =
+          document.getElementById("currentPassword").value;
+        const newPassword = document.getElementById("newPassword").value;
+        const confirmPassword =
+          document.getElementById("confirmPassword").value;
+
+        // Validation
+        if (newPassword !== confirmPassword) {
+          showToast("New passwords do not match!", "error");
+          return;
+        }
+
+        if (newPassword.length < 6) {
+          showToast("Password must be at least 6 characters!", "error");
+          return;
+        }
+
+        try {
+          const token = localStorage.getItem("token");
+
+          if (!token) {
+            showToast("Please login to change password", "error");
+            return;
+          }
+
+          const response = await fetch(
+            "http://localhost:5000/api/users/change-password",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({
+                currentPassword: currentPassword,
+                newPassword: newPassword,
+              }),
+            }
+          );
+
+          const data = await response.json();
+
+          if (response.ok) {
+            showToast("Password changed successfully!");
+            togglePasswordForm();
+
+            // Clear the form
+            document.getElementById("passwordForm").reset();
+
+            // Important: The password is now changed in the database
+            // The user will need to use the new password for next login
+          } else {
+            throw new Error(
+              data.error || data.message || "Failed to change password"
+            );
+          }
+        } catch (error) {
+          console.error("Error changing password:", error);
+          showToast(error.message, "error");
+        }
+      }
+
+      function updateDemoPassword(newPassword) {
+        // Store in localStorage for demo purposes
+        localStorage.setItem("demoPassword", newPassword);
+
+        // Also update in user object
+        const user = JSON.parse(localStorage.getItem("user") || "{}");
+        user.demoPassword = newPassword;
+        localStorage.setItem("user", JSON.stringify(user));
+      }
+
+      function toggle2FA() {
+        is2FAEnabled = !is2FAEnabled;
+
+        const statusElement = document.getElementById("2faStatus");
+        const buttonElement = document.getElementById("2faButton");
+
+        if (is2FAEnabled) {
+          statusElement.textContent = "Enabled";
+          statusElement.style.color = "#2ecc71";
+          buttonElement.innerHTML =
+            '<i class="fas fa-shield-alt"></i> Disable 2FA';
+          showToast("Two-factor authentication enabled!");
+        } else {
+          statusElement.textContent = "Not enabled";
+          statusElement.style.color = "";
+          buttonElement.innerHTML =
+            '<i class="fas fa-shield-alt"></i> Enable 2FA';
+          showToast("Two-factor authentication disabled!");
+        }
+
+        // Save to localStorage for demo
+        localStorage.setItem("user2FA", is2FAEnabled);
+      }
+
+      function showSampleProfile() {
+        currentUser = {
+          username: "John Doe",
+          email: "john@example.com",
+          phone: "+1 234 567 890",
+          createdAt: new Date(
+            Date.now() - 30 * 24 * 60 * 60 * 1000
+          ).toISOString(),
+        };
+
+        displayUserProfile();
+      }
+
+      function showSampleOrders() {
+        // Use the same sample orders as orders page
+        userOrders = [
+          {
+            _id: "ORD12345678",
+            createdAt: new Date(
+              Date.now() - 2 * 24 * 60 * 60 * 1000
+            ).toISOString(),
+            status: "Delivered",
+            totalAmount: 149.99,
+            products: [{}, {}],
+          },
+          {
+            _id: "ORD87654321",
+            createdAt: new Date(
+              Date.now() - 5 * 24 * 60 * 60 * 1000
+            ).toISOString(),
+            status: "Shipped",
+            totalAmount: 89.99,
+            products: [{}],
+          },
+          {
+            _id: "ORD11223344",
+            createdAt: new Date(
+              Date.now() - 1 * 24 * 60 * 60 * 1000
+            ).toISOString(),
+            status: "Processing",
+            totalAmount: 249.5,
+            products: [{}, {}, {}],
+          },
+          {
+            _id: "ORD55667788",
+            createdAt: new Date(
+              Date.now() - 10 * 24 * 60 * 60 * 1000
+            ).toISOString(),
+            status: "Pending",
+            totalAmount: 45.99,
+            products: [{}, {}],
+          },
+          {
+            _id: "ORD99887766",
+            createdAt: new Date(
+              Date.now() - 15 * 24 * 60 * 60 * 1000
+            ).toISOString(),
+            status: "Delivered",
+            totalAmount: 299.99,
+            products: [{}, {}, {}, {}],
+          },
+          {
+            _id: "ORD33445566",
+            createdAt: new Date(
+              Date.now() - 20 * 24 * 60 * 60 * 1000
+            ).toISOString(),
+            status: "Cancelled",
+            totalAmount: 79.99,
+            products: [{}],
+          },
+          {
+            _id: "ORD77889900",
+            createdAt: new Date(
+              Date.now() - 25 * 24 * 60 * 60 * 1000
+            ).toISOString(),
+            status: "Delivered",
+            totalAmount: 189.99,
+            products: [{}, {}],
+          },
+        ];
+
+        displayAllOrders();
+      }
+
+      function showToast(message, type = "success") {
+        // Remove existing toast
+        const existingToast = document.querySelector(".toast");
+        if (existingToast) {
+          existingToast.remove();
+        }
+
+        const toast = document.createElement("div");
+        toast.className = `toast ${type}`;
+        toast.innerHTML = `
+                <i class="fas fa-${
+                  type === "success" ? "check-circle" : "exclamation-circle"
+                }"></i>
+                <span>${message}</span>
+            `;
+
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+          toast.remove();
+        }, 3000);
+      }
+
+      function updateCartCount() {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        const cartCount = document.querySelector(".cart-count");
+        if (cartCount) {
+          cartCount.textContent = totalItems;
+        }
+      }
+
+      async function checkAuthStatus() {
+        const token = localStorage.getItem("token");
+        const authButtons = document.querySelector(".auth-buttons");
+
+        if (!authButtons) return;
+
+        if (token) {
+          try {
+            const response = await fetch("http://localhost:5000/api/auth/me", {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+
+            if (response.ok) {
+              const user = await response.json();
+              authButtons.innerHTML = `
+                            <span class="welcome">Welcome, ${user.username}</span>
+                            <a href="profile.html" class="btn-register">Profile</a>
+                            <a href="#" onclick="logout()" class="btn-login">Logout</a>
+                        `;
+            } else {
+              localStorage.removeItem("token");
+            }
+          } catch (error) {
+            console.error("Error checking auth status:", error);
+            localStorage.removeItem("token");
+          }
+        }
+      }
+
+      function logout() {
+        // Clear everything
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        localStorage.removeItem("userAddresses");
+        localStorage.removeItem("user2FA");
+        localStorage.removeItem("cart");
+
+        showToast("Logged out successfully");
+
+        setTimeout(() => {
+          window.location.href = "../index.html";
+        }, 500);
+      }
+
+      // Initialize 2FA status
+      is2FAEnabled = localStorage.getItem("user2FA") === "true";
+      if (is2FAEnabled) {
+        document.getElementById("2faStatus").textContent = "Enabled";
+        document.getElementById("2faStatus").style.color = "#2ecc71";
+        document.getElementById("2faButton").innerHTML =
+          '<i class="fas fa-shield-alt"></i> Disable 2FA';
+      }
+
+      window.logout = logout;
+    </script>
+  </body>
+</html>

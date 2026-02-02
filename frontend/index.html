@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodeAlpha E-Commerce Store</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="container">
+        <div class="nav-brand">
+          <a href="index.html">🛒 CodeAlpha Store</a>
+        </div>
+
+        <div class="nav-search">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search products..."
+          />
+          <button id="searchBtn"><i class="fas fa-search"></i></button>
+        </div>
+
+        <div class="nav-links">
+          <a href="index.html" class="active"
+            ><i class="fas fa-home"></i> Home</a
+          >
+          <a href="pages/products.html"><i class="fas fa-store"></i> Shop</a>
+          <a href="pages/cart.html" id="cartLink">
+            <i class="fas fa-shopping-cart"></i> Cart
+            <span class="cart-count">0</span>
+          </a>
+          <a href="pages/orders.html"
+            ><i class="fas fa-clipboard-list"></i> Orders</a
+          >
+
+          <a href="pages/admin.html"><i class="fas fa-cog"></i> Admin</a>
+          <div class="auth-buttons">
+            <!-- Will be populated by JavaScript -->
+            <a href="pages/login.html" class="btn-login">Login</a>
+            <a href="pages/register.html" class="btn-register">Register</a>
+          </div>
+        </div>
+
+        <div class="mobile-menu-btn">
+          <i class="fas fa-bars"></i>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container">
+        <h1>Welcome to CodeAlpha Store</h1>
+        <p>Discover amazing products at great prices</p>
+        <!-- Change this line: -->
+        <a href="pages/products.html" class="btn-hero">Shop Now</a>
+      </div>
+    </section>
+
+    <!-- Category Filter -->
+    <section class="categories">
+      <div class="container">
+        <h2>Shop by Category</h2>
+        <div class="category-filters">
+          <button class="category-btn active" data-category="all">
+            All Products
+          </button>
+          <button class="category-btn" data-category="Electronics">
+            Electronics
+          </button>
+          <button class="category-btn" data-category="Clothing">
+            Clothing
+          </button>
+          <button class="category-btn" data-category="Books">Books</button>
+          <button class="category-btn" data-category="Home">Home</button>
+          <button class="category-btn" data-category="Sports">Sports</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Products Grid -->
+    <section class="products" id="products">
+      <div class="container">
+        <h2>Featured Products</h2>
+        <div class="products-grid" id="productsGrid">
+          <!-- Products will be loaded here by JavaScript -->
+          <div class="loading">Loading products...</div>
+        </div>
+        <div class="pagination" id="pagination">
+          <!-- Pagination will be added here -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+      <div class="container">
+        <div class="feature">
+          <i class="fas fa-shipping-fast"></i>
+          <h3>Free Shipping</h3>
+          <p>On orders over $50</p>
+        </div>
+        <div class="feature">
+          <i class="fas fa-undo-alt"></i>
+          <h3>30-Day Returns</h3>
+          <p>Money back guarantee</p>
+        </div>
+        <div class="feature">
+          <i class="fas fa-lock"></i>
+          <h3>Secure Payment</h3>
+          <p>100% secure transactions</p>
+        </div>
+        <div class="feature">
+          <i class="fas fa-headset"></i>
+          <h3>24/7 Support</h3>
+          <p>Dedicated customer service</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-section">
+          <h3>CodeAlpha Store</h3>
+          <p>Your one-stop shop for all needs</p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <a href="index.html">Home</a>
+          <a href="pages/products.html">Products</a>
+          <a href="pages/cart.html">Cart</a>
+          <a href="pages/orders.html">Orders</a>
+          <a href="pages/profile.html">Profile</a>
+        </div>
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <p>Email: support@codealpha.com</p>
+          <p>Phone: +1 234 567 890</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 CodeAlpha E-Commerce Store. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/app.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/auth.js"></script>
+  </body>
+</html>

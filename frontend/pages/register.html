@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register - CodeAlpha Store</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      .auth-container {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem 1rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+
+      .auth-card {
+        background: white;
+        border-radius: 15px;
+        padding: 3rem;
+        width: 100%;
+        max-width: 450px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      }
+
+      .auth-header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .auth-header h1 {
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+      }
+
+      .auth-header p {
+        color: #7f8c8d;
+      }
+
+      .auth-logo {
+        font-size: 3rem;
+        color: #3498db;
+        margin-bottom: 1rem;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #2c3e50;
+        font-weight: 500;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s;
+      }
+
+      .form-group input:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+      }
+
+      .password-strength {
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
+      }
+
+      .strength-bar {
+        height: 5px;
+        background: #eee;
+        border-radius: 3px;
+        margin-top: 0.5rem;
+        overflow: hidden;
+      }
+
+      .strength-fill {
+        height: 100%;
+        width: 0%;
+        background: #e74c3c;
+        transition: all 0.3s;
+      }
+
+      .strength-fill.weak {
+        width: 30%;
+        background: #e74c3c;
+      }
+      .strength-fill.fair {
+        width: 60%;
+        background: #f39c12;
+      }
+      .strength-fill.good {
+        width: 80%;
+        background: #3498db;
+      }
+      .strength-fill.strong {
+        width: 100%;
+        background: #2ecc71;
+      }
+
+      .error-message {
+        color: #e74c3c;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+        min-height: 1.2rem;
+      }
+
+      .btn-submit {
+        width: 100%;
+        padding: 1rem;
+        background: #3498db;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s;
+        margin-top: 1rem;
+      }
+
+      .btn-submit:hover {
+        background: #2980b9;
+      }
+
+      .btn-submit:disabled {
+        background: #bdc3c7;
+        cursor: not-allowed;
+      }
+
+      .auth-footer {
+        text-align: center;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #eee;
+      }
+
+      .auth-footer a {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .auth-footer a:hover {
+        text-decoration: underline;
+      }
+
+      .terms {
+        font-size: 0.9rem;
+        color: #7f8c8d;
+        margin-top: 1rem;
+      }
+
+      .terms a {
+        color: #3498db;
+      }
+
+      @media (max-width: 480px) {
+        .auth-card {
+          padding: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Simple Navigation -->
+    <nav style="background: #2c3e50; padding: 1rem">
+      <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px">
+        <a
+          href="../index.html"
+          style="
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 600;
+          "
+        >
+          🛒 CodeAlpha Store
+        </a>
+      </div>
+    </nav>
+
+    <!-- Registration Form -->
+    <div class="auth-container">
+      <div class="auth-card">
+        <div class="auth-header">
+          <div class="auth-logo">
+            <i class="fas fa-user-plus"></i>
+          </div>
+          <h1>Create Account</h1>
+          <p>Join thousands of happy customers</p>
+        </div>
+
+        <form id="registerForm">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              required
+              placeholder="Choose a username"
+              minlength="3"
+            />
+            <div class="error-message"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              placeholder="Enter your email"
+            />
+            <div class="error-message"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              required
+              placeholder="Create a password"
+              minlength="6"
+              oninput="checkPasswordStrength(this.value)"
+            />
+            <div class="password-strength" id="passwordStrength">
+              Password strength: <span id="strengthText">None</span>
+            </div>
+            <div class="strength-bar">
+              <div class="strength-fill" id="strengthFill"></div>
+            </div>
+            <div class="error-message"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              required
+              placeholder="Confirm your password"
+            />
+            <div class="error-message"></div>
+          </div>
+
+          <div class="terms">
+            <input type="checkbox" id="terms" required />
+            <label for="terms">
+              I agree to the <a href="#">Terms of Service</a> and
+              <a href="#">Privacy Policy</a>
+            </label>
+          </div>
+
+          <button type="submit" class="btn-submit">Create Account</button>
+        </form>
+
+        <div class="auth-footer">
+          <p>Already have an account? <a href="login.html">Sign in here</a></p>
+          <p style="margin-top: 1rem">
+            <a href="../index.html">
+              <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../js/auth.js"></script>
+    <script>
+      // Check if already logged in
+      document.addEventListener("DOMContentLoaded", function () {
+        const token = localStorage.getItem("token");
+        if (token) {
+          window.location.href = "../index.html";
+        }
+      });
+
+      function checkPasswordStrength(password) {
+        const strengthFill = document.getElementById("strengthFill");
+        const strengthText = document.getElementById("strengthText");
+
+        let strength = 0;
+
+        // Length check
+        if (password.length >= 6) strength++;
+        if (password.length >= 8) strength++;
+
+        // Complexity checks
+        if (/[A-Z]/.test(password)) strength++;
+        if (/[0-9]/.test(password)) strength++;
+        if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+        // Update UI
+        const classes = ["weak", "fair", "good", "strong", "strong"];
+        const texts = ["Weak", "Fair", "Good", "Strong", "Very Strong"];
+
+        strengthFill.className = "strength-fill " + (classes[strength] || "");
+        strengthFill.style.width = strength * 20 + "%";
+        strengthText.textContent = texts[strength] || "None";
+        strengthText.style.color =
+          strength >= 3 ? "#2ecc71" : strength >= 2 ? "#3498db" : "#e74c3c";
+      }
+    </script>
+  </body>
+</html>

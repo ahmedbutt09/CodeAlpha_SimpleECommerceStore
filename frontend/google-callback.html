@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Google Login Complete</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding: 50px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+      }
+      .container {
+        background: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        color: #333;
+        max-width: 500px;
+      }
+      .success {
+        color: #2ecc71;
+        font-size: 24px;
+      }
+      .error {
+        color: #e74c3c;
+        font-size: 24px;
+      }
+      .loading {
+        font-size: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" id="message">
+      <div class="loading">
+        <p>Processing Google login...</p>
+      </div>
+    </div>
+
+    <script>
+      // Get URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get("token");
+      const userParam = urlParams.get("user");
+      const error = urlParams.get("error");
+
+      if (error) {
+        // Handle error
+        document.getElementById("message").innerHTML = `
+                <div class="error">
+                    <p>❌ Login failed: ${error}</p>
+                    <p><a href="login.html">Go back to login</a></p>
+                </div>
+            `;
+      } else if (token && userParam) {
+        try {
+          // Parse user data
+          const user = JSON.parse(decodeURIComponent(userParam));
+
+          // Save to localStorage
+          localStorage.setItem("token", token);
+          localStorage.setItem("user", JSON.stringify(user));
+
+          // Show success
+          document.getElementById("message").innerHTML = `
+                    <div class="success">
+                        <p>✅ Login successful!</p>
+                        <p>Redirecting to home page...</p>
+                    </div>
+                `;
+
+          // Redirect to home after 2 seconds
+          setTimeout(() => {
+            window.location.href = "../index.html";
+          }, 2000);
+        } catch (parseError) {
+          document.getElementById("message").innerHTML = `
+                    <div class="error">
+                        <p>❌ Error processing login data</p>
+                        <p>${parseError.message}</p>
+                        <p><a href="login.html">Go back to login</a></p>
+                    </div>
+                `;
+        }
+      } else {
+        // No token or user data
+        document.getElementById("message").innerHTML = `
+                <div class="error">
+                    <p>❌ No login data received</p>
+                    <p><a href="login.html">Go back to login</a></p>
+                </div>
+            `;
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>All Products - CodeAlpha Store</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      .products-page-container {
+        padding: 3rem 0;
+      }
+
+      .products-header {
+        margin-bottom: 2rem;
+      }
+
+      .products-header h1 {
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+      }
+
+      .products-tools {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .search-box {
+        display: flex;
+        flex: 1;
+        max-width: 400px;
+      }
+
+      .search-box input {
+        flex: 1;
+        padding: 0.8rem 1rem;
+        border: 1px solid #ddd;
+        border-radius: 4px 0 0 4px;
+        font-size: 1rem;
+      }
+
+      .search-box button {
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 0 1.5rem;
+        border-radius: 0 4px 4px 0;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      .search-box button:hover {
+        background: #2980b9;
+      }
+
+      .sort-options {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+      }
+
+      .sort-select {
+        padding: 0.8rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background: white;
+        cursor: pointer;
+      }
+
+      .view-toggle {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .view-btn {
+        padding: 0.5rem 0.8rem;
+        border: 1px solid #ddd;
+        background: white;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+      }
+
+      .view-btn.active {
+        background: #3498db;
+        color: white;
+        border-color: #3498db;
+      }
+
+      .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 2rem;
+      }
+
+      .products-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .product-card-list {
+        display: flex;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .product-card-list .product-img {
+        width: 200px;
+        height: 200px;
+        flex-shrink: 0;
+        object-fit: cover;
+      }
+
+      .product-card-list .product-info {
+        flex: 1;
+        padding: 1.5rem;
+      }
+
+      .products-sidebar {
+        display: grid;
+        grid-template-columns: 250px 1fr;
+        gap: 2rem;
+      }
+
+      .filters-panel {
+        background: white;
+        border-radius: 10px;
+        padding: 1.5rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        height: fit-content;
+      }
+
+      .filter-section {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid #eee;
+      }
+
+      .filter-section:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      .filter-title {
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 1rem;
+      }
+
+      .price-range {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 1rem 0;
+      }
+
+      .price-range input {
+        width: 100px;
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 0.9rem;
+      }
+
+      .filter-options {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        max-height: 200px;
+        overflow-y: auto;
+        padding-right: 5px;
+      }
+
+      .filter-options::-webkit-scrollbar {
+        width: 5px;
+      }
+
+      .filter-options::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 5px;
+      }
+
+      .filter-options::-webkit-scrollbar-thumb {
+        background: #3498db;
+        border-radius: 5px;
+      }
+
+      .filter-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        padding: 0.3rem 0;
+      }
+
+      .filter-checkbox input {
+        margin: 0;
+        cursor: pointer;
+      }
+
+      .btn-apply {
+        width: 100%;
+        padding: 0.8rem;
+        background: #3498db;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 1rem;
+        font-weight: 600;
+        transition: background 0.3s;
+      }
+
+      .btn-apply:hover {
+        background: #2980b9;
+      }
+
+      .btn-clear {
+        width: 100%;
+        padding: 0.8rem;
+        background: #f8f9fa;
+        color: #2c3e50;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 0.5rem;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+
+      .btn-clear:hover {
+        background: #e9ecef;
+      }
+
+      .stock-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+      }
+
+      .in-stock {
+        color: #27ae60;
+        background: rgba(39, 174, 96, 0.1);
+      }
+
+      .out-of-stock {
+        color: #e74c3c;
+        background: rgba(231, 76, 60, 0.1);
+      }
+
+      @media (max-width: 992px) {
+        .products-sidebar {
+          grid-template-columns: 1fr;
+        }
+
+        .filters-panel {
+          position: static;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .products-tools {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .search-box {
+          max-width: 100%;
+        }
+
+        .product-card-list {
+          flex-direction: column;
+        }
+
+        .product-card-list .product-img {
+          width: 100%;
+          height: 200px;
+        }
+
+        .price-range {
+          flex-wrap: wrap;
+        }
+
+        .price-range input {
+          width: calc(50% - 0.5rem);
+        }
+      }
+
+      .no-products {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 3rem;
+      }
+
+      .no-products i {
+        font-size: 3rem;
+        color: #bdc3c7;
+        margin-bottom: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="container">
+        <div class="nav-brand">
+          <a href="../index.html">🛒 CodeAlpha Store</a>
+        </div>
+
+        <div class="nav-links">
+          <a href="../index.html"><i class="fas fa-home"></i> Home</a>
+          <a href="products.html" class="active"
+            ><i class="fas fa-store"></i> Shop</a
+          >
+          <a href="cart.html" id="cartLink">
+            <i class="fas fa-shopping-cart"></i> Cart
+            <span class="cart-count">0</span>
+          </a>
+          <a href="orders.html"><i class="fas fa-clipboard-list"></i> Orders</a>
+          <a href="admin.html"><i class="fas fa-cog"></i> Admin</a>
+          <div class="auth-buttons" id="authButtons">
+            <!-- Will be populated by JavaScript -->
+            <a href="login.html" class="btn-login">Login</a>
+            <a href="register.html" class="btn-register">Register</a>
+          </div>
+        </div>
+
+        <div class="mobile-menu-btn">
+          <i class="fas fa-bars"></i>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Products Page Content -->
+    <main class="container products-page-container">
+      <div class="products-header">
+        <h1><i class="fas fa-store"></i> All Products</h1>
+        <p>Browse our complete collection of products</p>
+      </div>
+
+      <div class="products-tools">
+        <div class="search-box">
+          <input
+            type="text"
+            id="productsSearch"
+            placeholder="Search products..."
+          />
+          <button id="searchBtn">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+
+        <div class="sort-options">
+          <span>Sort by:</span>
+          <select class="sort-select" id="sortSelect">
+            <option value="newest">Newest First</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+            <option value="name">Name A-Z</option>
+          </select>
+
+          <div class="view-toggle">
+            <button class="view-btn active" id="gridViewBtn">
+              <i class="fas fa-th-large"></i>
+            </button>
+            <button class="view-btn" id="listViewBtn">
+              <i class="fas fa-list"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="products-sidebar">
+        <div class="filters-panel">
+          <div class="filter-section">
+            <div class="filter-title">Price Range ($)</div>
+            <div class="price-range">
+              <input
+                type="number"
+                id="minPrice"
+                placeholder="Min"
+                min="0"
+                step="0.01"
+              />
+              <span>to</span>
+              <input
+                type="number"
+                id="maxPrice"
+                placeholder="Max"
+                min="0"
+                step="0.01"
+              />
+            </div>
+          </div>
+
+          <div class="filter-section">
+            <div class="filter-title">Categories</div>
+            <div class="filter-options" id="categoryFilters">
+              <div class="loading-categories">Loading categories...</div>
+            </div>
+          </div>
+
+          <div class="filter-section">
+            <div class="filter-title">Availability</div>
+            <div class="filter-options">
+              <label class="filter-checkbox">
+                <input type="checkbox" id="inStockOnly" checked />
+                <span>In Stock Only</span>
+              </label>
+            </div>
+          </div>
+
+          <button class="btn-apply" id="applyFiltersBtn">Apply Filters</button>
+          <button class="btn-clear" id="clearFiltersBtn">
+            Clear All Filters
+          </button>
+        </div>
+
+        <div id="productsContainer">
+          <!-- Products will be loaded here -->
+        </div>
+      </div>
+
+      <div class="pagination" id="productsPagination">
+        <!-- Pagination will be added here -->
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-section">
+          <h3>CodeAlpha Store</h3>
+          <p>Your one-stop shop for all needs</p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <a href="../index.html">Home</a>
+          <a href="products.html">Products</a>
+          <a href="cart.html">Cart</a>
+          <a href="orders.html">Orders</a>
+          <a href="profile.html">Profile</a>
+        </div>
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <p>Email: support@codealpha.com</p>
+          <p>Phone: +1 234 567 890</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 CodeAlpha E-Commerce Store. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="../js/app.js"></script>
+    <script>
+      // Products Page JavaScript - No conflicts with app.js
+      let currentViewMode = "grid";
+      let currentSort = "newest";
+      let currentFilters = {
+        search: "",
+        category: [],
+        minPrice: null,
+        maxPrice: null,
+        inStock: true,
+      };
+      let allProducts = [];
+      let uniqueCategories = [];
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // Initialize products page
+        initProductsPage();
+
+        // Load products
+        loadProductsData();
+      });
+
+      function initProductsPage() {
+        // Set up event listeners
+        document
+          .getElementById("searchBtn")
+          .addEventListener("click", performSearch);
+        document
+          .getElementById("productsSearch")
+          .addEventListener("keypress", function (e) {
+            if (e.key === "Enter") performSearch();
+          });
+
+        document
+          .getElementById("sortSelect")
+          .addEventListener("change", handleSortChange);
+        document
+          .getElementById("gridViewBtn")
+          .addEventListener("click", () => setViewMode("grid"));
+        document
+          .getElementById("listViewBtn")
+          .addEventListener("click", () => setViewMode("list"));
+        document
+          .getElementById("applyFiltersBtn")
+          .addEventListener("click", applyFilters);
+        document
+          .getElementById("clearFiltersBtn")
+          .addEventListener("click", clearFilters);
+
+        // Check auth status
+        checkAuthStatus();
+      }
+
+      async function loadProductsData() {
+        try {
+          // Show loading state
+          document.getElementById("productsContainer").innerHTML =
+            '<div class="loading">Loading products...</div>';
+
+          // Fetch all products first to get categories
+          const response = await fetch(
+            "http://localhost:5000/api/products?limit=100"
+          );
+          const data = await response.json();
+
+          if (data.products && data.products.length > 0) {
+            allProducts = data.products;
+
+            // Extract unique categories
+            uniqueCategories = [
+              ...new Set(
+                data.products
+                  .map((p) => p.category)
+                  .filter((cat) => cat && cat.trim() !== "")
+              ),
+            ];
+
+            // Load categories
+            loadCategories();
+
+            // Display products
+            applyCurrentFilters();
+          } else {
+            showNoProducts();
+          }
+        } catch (error) {
+          console.error("Error loading products:", error);
+          showError("Failed to load products. Please try again.");
+        }
+      }
+
+      function loadCategories() {
+        const categoryFilters = document.getElementById("categoryFilters");
+
+        if (uniqueCategories.length === 0) {
+          categoryFilters.innerHTML =
+            '<div class="no-categories">No categories found</div>';
+          return;
+        }
+
+        categoryFilters.innerHTML = uniqueCategories
+          .map(
+            (category) => `
+                <label class="filter-checkbox">
+                    <input type="checkbox" value="${category}" checked />
+                    <span>${category}</span>
+                </label>
+            `
+          )
+          .join("");
+      }
+
+      function applyCurrentFilters() {
+        let filteredProducts = [...allProducts];
+
+        // Apply search filter
+        if (currentFilters.search) {
+          const searchTerm = currentFilters.search.toLowerCase();
+          filteredProducts = filteredProducts.filter(
+            (product) =>
+              product.name.toLowerCase().includes(searchTerm) ||
+              product.description.toLowerCase().includes(searchTerm) ||
+              product.category.toLowerCase().includes(searchTerm)
+          );
+        }
+
+        // Apply category filter
+        if (currentFilters.category.length > 0) {
+          filteredProducts = filteredProducts.filter((product) =>
+            currentFilters.category.includes(product.category)
+          );
+        }
+
+        // Apply price filter
+        if (currentFilters.minPrice !== null) {
+          filteredProducts = filteredProducts.filter(
+            (product) => product.price >= currentFilters.minPrice
+          );
+        }
+
+        if (currentFilters.maxPrice !== null) {
+          filteredProducts = filteredProducts.filter(
+            (product) => product.price <= currentFilters.maxPrice
+          );
+        }
+
+        // Apply stock filter
+        if (currentFilters.inStock) {
+          filteredProducts = filteredProducts.filter(
+            (product) => product.stock > 0
+          );
+        }
+
+        // Apply sorting
+        filteredProducts = sortProducts(filteredProducts);
+
+        // Display filtered products
+        displayProducts(filteredProducts);
+      }
+
+      function sortProducts(products) {
+        switch (currentSort) {
+          case "price-low":
+            return [...products].sort((a, b) => a.price - b.price);
+          case "price-high":
+            return [...products].sort((a, b) => b.price - a.price);
+          case "name":
+            return [...products].sort((a, b) => a.name.localeCompare(b.name));
+          case "newest":
+          default:
+            return products;
+        }
+      }
+
+      function displayProducts(products) {
+        const container = document.getElementById("productsContainer");
+
+        if (!products || products.length === 0) {
+          showNoProducts();
+          return;
+        }
+
+        if (currentViewMode === "grid") {
+          container.innerHTML = `
+                    <div class="products-grid" id="productsGrid">
+                        ${products
+                          .map(
+                            (product) => `
+                            <div class="product-card" data-id="${product._id}">
+                                <div class="product-img">
+                                    <img src="${
+                                      product.image ||
+                                      "https://via.placeholder.com/300x200?text=Product+Image"
+                                    }" 
+                                         alt="${product.name}"
+                                         onerror="this.src='https://via.placeholder.com/300x200?text=Product+Image'">
+                                </div>
+                                <div class="product-info">
+                                    <h3>${product.name}</h3>
+                                    <div class="product-category">${
+                                      product.category || "Uncategorized"
+                                    }</div>
+                                    <div class="product-description">${
+                                      product.description ||
+                                      "No description available"
+                                    }</div>
+                                    <div class="product-price">$${
+                                      product.price
+                                        ? product.price.toFixed(2)
+                                        : "0.00"
+                                    }</div>
+                                    <div class="stock-indicator ${
+                                      product.stock > 0
+                                        ? "in-stock"
+                                        : "out-of-stock"
+                                    }">
+                                        <i class="fas ${
+                                          product.stock > 0
+                                            ? "fa-check-circle"
+                                            : "fa-times-circle"
+                                        }"></i>
+                                        ${
+                                          product.stock > 0
+                                            ? "In Stock"
+                                            : "Out of Stock"
+                                        }
+                                    </div>
+                                    <div class="product-actions">
+                                        <button class="btn-view" onclick="viewProduct('${
+                                          product._id
+                                        }')">
+                                            <i class="fas fa-eye"></i> View Details
+                                        </button>
+                                        <button class="btn-add-cart" onclick="addToCartFromPage('${
+                                          product._id
+                                        }', '${product.name}', ${
+                              product.price || 0
+                            }, '${product.image || ""}')" ${
+                              product.stock === 0 ? "disabled" : ""
+                            }>
+                                            <i class="fas fa-cart-plus"></i> Add to Cart
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `
+                          )
+                          .join("")}
+                    </div>
+                `;
+        } else {
+          container.innerHTML = `
+                    <div class="products-list" id="productsGrid">
+                        ${products
+                          .map(
+                            (product) => `
+                            <div class="product-card-list">
+                                <img class="product-img" src="${
+                                  product.image ||
+                                  "https://via.placeholder.com/200x200?text=Product+Image"
+                                }" 
+                                     alt="${product.name}"
+                                     onerror="this.src='https://via.placeholder.com/200x200?text=Product+Image'">
+                                <div class="product-info">
+                                    <h3>${product.name}</h3>
+                                    <div class="product-category">${
+                                      product.category || "Uncategorized"
+                                    }</div>
+                                    <div class="product-description">${
+                                      product.description ||
+                                      "No description available"
+                                    }</div>
+                                    <div class="product-price">$${
+                                      product.price
+                                        ? product.price.toFixed(2)
+                                        : "0.00"
+                                    }</div>
+                                    <div class="stock-indicator ${
+                                      product.stock > 0
+                                        ? "in-stock"
+                                        : "out-of-stock"
+                                    }">
+                                        <i class="fas ${
+                                          product.stock > 0
+                                            ? "fa-check-circle"
+                                            : "fa-times-circle"
+                                        }"></i>
+                                        ${
+                                          product.stock > 0
+                                            ? "In Stock"
+                                            : "Out of Stock"
+                                        }
+                                    </div>
+                                    <div class="product-actions">
+                                        <button class="btn-view" onclick="viewProduct('${
+                                          product._id
+                                        }')">
+                                            <i class="fas fa-eye"></i> View Details
+                                        </button>
+                                        <button class="btn-add-cart" onclick="addToCartFromPage('${
+                                          product._id
+                                        }', '${product.name}', ${
+                              product.price || 0
+                            }, '${product.image || ""}')" ${
+                              product.stock === 0 ? "disabled" : ""
+                            }>
+                                            <i class="fas fa-cart-plus"></i> Add to Cart
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `
+                          )
+                          .join("")}
+                    </div>
+                `;
+        }
+
+        // Update cart count
+        updateCartCount();
+      }
+
+      function showNoProducts() {
+        document.getElementById("productsContainer").innerHTML = `
+                <div class="no-products">
+                    <i class="fas fa-search"></i>
+                    <h3>No Products Found</h3>
+                    <p>Try adjusting your search or filters</p>
+                    <button onclick="clearFilters()" class="btn-view" style="margin-top: 1rem;">
+                        Clear All Filters
+                    </button>
+                </div>
+            `;
+      }
+
+      function showError(message) {
+        document.getElementById("productsContainer").innerHTML = `
+                <div class="no-products">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Error Loading Products</h3>
+                    <p>${message}</p>
+                    <button onclick="loadProductsData()" class="btn-view" style="margin-top: 1rem;">
+                        <i class="fas fa-redo"></i> Try Again
+                    </button>
+                </div>
+            `;
+      }
+
+      function performSearch() {
+        const searchInput = document.getElementById("productsSearch");
+        currentFilters.search = searchInput.value.trim();
+        applyCurrentFilters();
+      }
+
+      function handleSortChange() {
+        currentSort = document.getElementById("sortSelect").value;
+        applyCurrentFilters();
+      }
+
+      function setViewMode(mode) {
+        currentViewMode = mode;
+
+        // Update active button
+        document
+          .getElementById("gridViewBtn")
+          .classList.toggle("active", mode === "grid");
+        document
+          .getElementById("listViewBtn")
+          .classList.toggle("active", mode === "list");
+
+        applyCurrentFilters();
+      }
+
+      function applyFilters() {
+        // Get price values
+        const minPriceInput = document.getElementById("minPrice");
+        const maxPriceInput = document.getElementById("maxPrice");
+
+        currentFilters.minPrice = minPriceInput.value
+          ? parseFloat(minPriceInput.value)
+          : null;
+        currentFilters.maxPrice = maxPriceInput.value
+          ? parseFloat(maxPriceInput.value)
+          : null;
+
+        // Get selected categories
+        const selectedCategories = Array.from(
+          document.querySelectorAll("#categoryFilters input:checked")
+        ).map((input) => input.value);
+
+        currentFilters.category = selectedCategories;
+
+        // Get stock filter
+        currentFilters.inStock = document.getElementById("inStockOnly").checked;
+
+        applyCurrentFilters();
+
+        // Show feedback
+        showToast("Filters applied successfully!");
+      }
+
+      function clearFilters() {
+        // Reset all filter inputs
+        document.getElementById("minPrice").value = "";
+        document.getElementById("maxPrice").value = "";
+        document.getElementById("productsSearch").value = "";
+        document.getElementById("inStockOnly").checked = true;
+        document.getElementById("sortSelect").value = "newest";
+
+        // Reset all checkboxes
+        document.querySelectorAll("#categoryFilters input").forEach((input) => {
+          input.checked = true;
+        });
+
+        // Reset filters object
+        currentFilters = {
+          search: "",
+          category: [],
+          minPrice: null,
+          maxPrice: null,
+          inStock: true,
+        };
+        currentSort = "newest";
+
+        applyCurrentFilters();
+
+        // Show feedback
+        showToast("All filters cleared!");
+      }
+
+      function viewProduct(productId) {
+        // Redirect to product details page
+        window.location.href = `product-details.html?id=${productId}`;
+      }
+
+      function addToCartFromPage(productId, productName, price, image) {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        const existingItem = cart.find((item) => item.productId === productId);
+
+        if (existingItem) {
+          existingItem.quantity += 1;
+        } else {
+          cart.push({
+            productId,
+            name: productName,
+            price: price,
+            quantity: 1,
+            image:
+              image ||
+              `https://via.placeholder.com/100x100?text=${encodeURIComponent(
+                productName.substring(0, 20)
+              )}`,
+          });
+        }
+
+        localStorage.setItem("cart", JSON.stringify(cart));
+        showToast(`${productName} added to cart!`);
+        updateCartCount();
+      }
+
+      function showToast(message) {
+        // Create toast element
+        const toast = document.createElement("div");
+        toast.className = "toast success";
+        toast.innerHTML = `
+                <i class="fas fa-check-circle"></i>
+                <span>${message}</span>
+            `;
+
+        // Add to page
+        document.body.appendChild(toast);
+
+        // Remove after 3 seconds
+        setTimeout(() => {
+          toast.remove();
+        }, 3000);
+      }
+
+      async function checkAuthStatus() {
+        const token = localStorage.getItem("token");
+        const authButtons = document.getElementById("authButtons");
+
+        if (!authButtons) return;
+
+        if (token) {
+          try {
+            const response = await fetch("http://localhost:5000/api/auth/me", {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+
+            if (response.ok) {
+              const user = await response.json();
+              authButtons.innerHTML = `
+                            <span class="welcome">Welcome, ${user.username}</span>
+                            <a href="profile.html" class="btn-register">Profile</a>
+                            <a href="#" onclick="logoutFromPage()" class="btn-login">Logout</a>
+                        `;
+            }
+          } catch (error) {
+            console.error("Auth check error:", error);
+          }
+        }
+      }
+
+      function logoutFromPage() {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        showToast("Logged out successfully");
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      }
+
+      // Make functions available globally
+      window.viewProduct = viewProduct;
+      window.addToCartFromPage = addToCartFromPage;
+      window.logoutFromPage = logoutFromPage;
+    </script>
+  </body>
+</html>

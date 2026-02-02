@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - CodeAlpha Store</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      .auth-container {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem 1rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+
+      .auth-card {
+        background: white;
+        border-radius: 15px;
+        padding: 3rem;
+        width: 100%;
+        max-width: 450px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      }
+
+      .auth-header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .auth-header h1 {
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+      }
+
+      .auth-header p {
+        color: #7f8c8d;
+      }
+
+      .auth-logo {
+        font-size: 3rem;
+        color: #3498db;
+        margin-bottom: 1rem;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #2c3e50;
+        font-weight: 500;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s;
+      }
+
+      .form-group input:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+      }
+
+      .error-message {
+        color: #e74c3c;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+        min-height: 1.2rem;
+      }
+
+      .btn-submit {
+        width: 100%;
+        padding: 1rem;
+        background: #3498db;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s;
+        margin-top: 1rem;
+      }
+
+      .btn-submit:hover {
+        background: #2980b9;
+      }
+
+      .btn-submit:disabled {
+        background: #bdc3c7;
+        cursor: not-allowed;
+      }
+
+      .auth-footer {
+        text-align: center;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #eee;
+      }
+
+      .auth-footer a {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .auth-footer a:hover {
+        text-decoration: underline;
+      }
+
+      .social-login {
+        margin: 2rem 0;
+        text-align: center;
+      }
+
+      .social-login p {
+        color: #7f8c8d;
+        margin-bottom: 1rem;
+        position: relative;
+      }
+
+      .social-login p::before,
+      .social-login p::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 30%;
+        height: 1px;
+        background: #eee;
+      }
+
+      .social-login p::before {
+        left: 0;
+      }
+
+      .social-login p::after {
+        right: 0;
+      }
+
+      .social-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+      }
+
+      .social-btn {
+        flex: 1;
+        padding: 0.8rem;
+        border: 1px solid #ddd;
+        background: white;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+
+      .social-btn.google:hover {
+        border-color: #db4437;
+        color: #db4437;
+      }
+
+      .social-btn.facebook:hover {
+        border-color: #4267b2;
+        color: #4267b2;
+      }
+
+      @media (max-width: 480px) {
+        .auth-card {
+          padding: 2rem;
+        }
+
+        .social-buttons {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Simple Navigation -->
+    <nav style="background: #2c3e50; padding: 1rem">
+      <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px">
+        <a
+          href="../index.html"
+          style="
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 600;
+          "
+        >
+          🛒 CodeAlpha Store
+        </a>
+      </div>
+    </nav>
+
+    <!-- Login Form -->
+    <div class="auth-container">
+      <div class="auth-card">
+        <div class="auth-header">
+          <div class="auth-logo">
+            <i class="fas fa-user-circle"></i>
+          </div>
+          <h1>Welcome Back</h1>
+          <p>Sign in to your account to continue shopping</p>
+        </div>
+
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              placeholder="Enter your email"
+            />
+            <div class="error-message"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              required
+              placeholder="Enter your password"
+            />
+            <div class="error-message"></div>
+          </div>
+
+          <div style="text-align: right; margin-bottom: 1rem">
+            <a
+              href="#"
+              style="color: #3498db; text-decoration: none; font-size: 0.9rem"
+            >
+              <p><a href="forgot-password.html">Forgot password?</a></p>
+            </a>
+          </div>
+
+          <button type="submit" class="btn-submit">Sign In</button>
+        </form>
+
+        <div class="social-login">
+          <p>Or sign in with</p>
+          <div class="social-buttons">
+            <button type="button" class="social-btn google">
+              <i class="fab fa-google"></i> Google
+            </button>
+          </div>
+        </div>
+
+        <div class="auth-footer">
+          <p>Don't have an account? <a href="register.html">Sign up here</a></p>
+          <p style="margin-top: 1rem">
+            <a href="../index.html">
+              <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../js/auth.js"></script>
+    <script>
+      // Check if already logged in
+      document.addEventListener("DOMContentLoaded", function () {
+        const token = localStorage.getItem("token");
+        if (token) {
+          window.location.href = "../index.html";
+        }
+      });
+    </script>
+  </body>
+</html>
